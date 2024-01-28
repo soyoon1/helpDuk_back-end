@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="review")
 public class ReviewEntity {
 
     @Id
@@ -18,12 +19,15 @@ public class ReviewEntity {
     private Integer reviewId;
 
     @OneToOne
+    @JoinColumn(name = "userId")
     private UserEntity userId;
 
     @OneToOne
+    @JoinColumn(name = "acceptUserId")
     private UserEntity acceptUserId;
 
     @OneToOne
+    @JoinColumn(name = "taskId")
     private TaskEntity taskId;
 
     @Column(nullable = false, length = 200)

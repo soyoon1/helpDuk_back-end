@@ -14,15 +14,18 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="message")
 public class MessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer messageId;
 
     @ManyToOne
+    @JoinColumn(name = "senderId")
     private UserEntity senderId;
 
     @ManyToOne
+    @JoinColumn(name = "roomId")
     private ChatRoomEntity roomId;
 
     @Column(nullable = false)

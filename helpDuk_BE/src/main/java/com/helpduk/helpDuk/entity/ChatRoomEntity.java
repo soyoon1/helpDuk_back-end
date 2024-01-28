@@ -12,18 +12,22 @@ import org.springframework.scheduling.config.Task;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="chatroom")
 public class ChatRoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roomId;
 
     @ManyToOne
+    @JoinColumn(name = "taskId")
     private TaskEntity taskId;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "userId")
     private UserEntity userId;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "helpUserId")
     private UserEntity helperUserId;
 
 }
