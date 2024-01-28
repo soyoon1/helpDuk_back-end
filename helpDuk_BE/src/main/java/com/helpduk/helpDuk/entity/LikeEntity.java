@@ -11,14 +11,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="likeUser")
 public class LikeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer likeId;
 
     @OneToOne
+    @JoinColumn(name = "userId")
     private UserEntity userId;
 
     @ManyToOne
+    @JoinColumn(name = "likeUserId")
     private UserEntity likeUserId;
 }

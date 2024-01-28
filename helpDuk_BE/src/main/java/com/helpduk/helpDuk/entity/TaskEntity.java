@@ -58,8 +58,10 @@ public class TaskEntity {
     private Integer taskFee;
 
     @OneToOne
+    @JoinColumn(name = "userId")
     private UserEntity userId;
 
     @OneToOne
+    @JoinColumn(name = "acceptUserId")
     private UserEntity acceptUserId;
 }
