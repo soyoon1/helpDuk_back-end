@@ -18,11 +18,11 @@ public class ReviewEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reviewId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userId")
     private UserEntity userId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "acceptUserId")
     private UserEntity acceptUserId;
 
