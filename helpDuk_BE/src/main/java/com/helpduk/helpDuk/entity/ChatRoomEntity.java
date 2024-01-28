@@ -22,11 +22,11 @@ public class ChatRoomEntity {
     @JoinColumn(name = "taskId")
     private TaskEntity taskId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userId")
     private UserEntity userId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "helpUserId")
     private UserEntity helperUserId;
 

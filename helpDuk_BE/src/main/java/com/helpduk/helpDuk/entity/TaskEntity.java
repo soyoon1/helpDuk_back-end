@@ -57,11 +57,11 @@ public class TaskEntity {
     @Column
     private Integer taskFee;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userId")
     private UserEntity userId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "acceptUserId")
     private UserEntity acceptUserId;
 }
