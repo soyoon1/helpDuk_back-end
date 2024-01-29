@@ -22,9 +22,9 @@ public class TaskService {
 
         // 위치 카테고리 설정 타입 변환
         LocationCategory locationCategory = switch (locaCategory) {
-            case "학교" -> LocationCategory.SCHOOL;
+            case "학교 안" -> LocationCategory.SCHOOL;
             case "기숙사" -> LocationCategory.DORMITORY;
-            case "밖" -> LocationCategory.ETC;
+            case "기타" -> LocationCategory.ETC;
             default -> null;
         };
 
@@ -32,6 +32,9 @@ public class TaskService {
         DetailCategory detailCategory = switch (detaCategory){
             case "프린트" -> DetailCategory.PRINT;
             case "음식" -> DetailCategory.FOOD;
+            case "알바 대타" -> DetailCategory.COVFR;
+            case "청소" -> DetailCategory.CLEAN;
+            case "행사 보조" -> DetailCategory.EVTAST;
             case "벌레" -> DetailCategory.BUG;
             default ->  null;
         };

@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -26,10 +23,10 @@ public class TaskController {
     private final S3UploadService s3UploadService;
     private final TaskService taskService;
 
-    @PostMapping("/user")
+    @PostMapping("/user") // 테스트 코드
     public ResponseEntity<String> createUser(){
         UserEntity user = UserEntity.builder()
-                .userEmail("soyoonn@duksung.ac.kr")
+                .userEmail("dodam@duksung.ac.kr")
                 .nickName("도담")
                 .password("20210841")
                 .temperature(37.96F)
@@ -70,6 +67,7 @@ public class TaskController {
         }
     }
 
+//    @GetMapping("")
 
 
 }
