@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -45,8 +46,10 @@ public class TaskEntity {
     @Column(nullable = false)
     private DetailCategory detailCategory;
 
-    @Column
-    private String image;
+    @ElementCollection
+    @CollectionTable(name = "task_images", joinColumns = @JoinColumn(name = "task_id"))
+    @Column(name = "image")
+    private List<String> image;
 
     @Column
     private String taskTime;

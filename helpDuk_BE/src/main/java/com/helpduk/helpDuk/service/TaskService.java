@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TaskService {
@@ -18,7 +20,7 @@ public class TaskService {
 
     @Transactional
     public void createTask(Integer userId, String title, String content, String locaCategory,
-                           String detaCategory, String file, String taskTime, Integer reqFee, String reqFeeMeth, Integer taskFee, String taskFeeMeth){
+                           String detaCategory, List<String> files, String taskTime, Integer reqFee, String reqFeeMeth, Integer taskFee, String taskFeeMeth){
 
         // 위치 카테고리 설정 타입 변환
         LocationCategory locationCategory = switch (locaCategory) {
@@ -65,7 +67,7 @@ public class TaskService {
                 .taskStatus(TaskStatus.YET)
                 .locationCategory(locationCategory)
                 .detailCategory(detailCategory)
-                .image(file)
+                .image(files)
                 .taskTime(taskTime)
                 .requestFee(reqFee)
                 .requestFeeMethod(requestFeeMethod)

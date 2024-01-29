@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RequestMapping("/api")
@@ -46,18 +48,43 @@ public class TaskController {
         }
     }
 
+//    @PostMapping("/task")
+//    public ResponseEntity<String> createTask(@RequestParam Integer userId,
+//                                             @RequestParam("title") String title, @RequestParam("content") String content,
+//                                             @RequestParam("locationCategory") String locaCategory, @RequestParam("detailCategory") String detaCategory,
+//                                             @RequestParam("file") MultipartFile file, @RequestParam("taskTime") String taskTime,
+//                                             @RequestParam("requestFee") Integer reqFee, @RequestParam("requestFeeMethod") String reqFeeMeth,
+//                                             @RequestParam("taskFee") Integer taskFee, @RequestParam("taskFeeMethod") String taskFeeMeth){
+//        try {
+//            // 파일 String으로 변환
+//            String fileUrl = s3UploadService.saveFile(file);
+//
+//            taskService.createTask(userId, title, content, locaCategory, detaCategory, fileUrl, taskTime, reqFee, reqFeeMeth, taskFee, taskFeeMeth);
+//
+//            return ResponseEntity.ok("게시글 작성 완료");
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
+
     @PostMapping("/task")
-    public ResponseEntity<String> createTask(@RequestParam Integer userId,
-                                             @RequestParam("title") String title, @RequestParam("content") String content,
-                                             @RequestParam("locationCategory") String locaCategory, @RequestParam("detailCategory") String detaCategory,
-                                             @RequestParam("file") MultipartFile file, @RequestParam("taskTime") String taskTime,
-                                             @RequestParam("requestFee") Integer reqFee, @RequestParam("requestFeeMethod") String reqFeeMeth,
-                                             @RequestParam("taskFee") Integer taskFee, @RequestParam("taskFeeMethod") String taskFeeMeth){
+    public ResponseEntity<String> createTaskMultipleImages(@RequestParam Integer userId,
+                                                           @RequestParam("title") String title, @RequestParam("content") String content,
+                                                           @RequestParam("locationCategory") String locaCategory, @RequestParam("detailCategory") String detaCategory,
+                                                           @RequestParam("files") List<MultipartFile> files, @RequestParam("taskTime") String taskTime,
+                                                           @RequestParam("requestFee") Integer reqFee, @RequestParam("requestFeeMethod") String reqFeeMeth,
+                                                           @RequestParam("taskFee") Integer taskFee, @RequestParam("taskFeeMethod") String taskFeeMeth){
         try {
             // 파일 String으로 변환
-            String fileUrl = s3UploadService.saveFile(file);
+            List<String> fileUrls = new ArrayList<>();
+            for (MultipartFile file: files){
+                String fileUrl = s3UploadService.saveFile(file);
+                fileUrls.add(fileUrl);
+            }
 
-            taskService.createTask(userId, title, content, locaCategory, detaCategory, fileUrl, taskTime, reqFee, reqFeeMeth, taskFee, taskFeeMeth);
+            taskService.createTask(userId, title, content, locaCategory, detaCategory, fileUrls, taskTime, reqFee, reqFeeMeth, taskFee, taskFeeMeth);
 
             return ResponseEntity.ok("게시글 작성 완료");
 
