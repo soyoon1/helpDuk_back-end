@@ -1,19 +1,19 @@
 package com.helpduk.helpDuk.entity;
 
-import com.helpduk.helpDuk.base.Enum.DetailCategory;
-import com.helpduk.helpDuk.base.Enum.LocationCategory;
-import com.helpduk.helpDuk.base.Enum.TaskStatus;
+import com.helpduk.helpDuk.base.Enum.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,10 +49,16 @@ public class TaskEntity {
     private String image;
 
     @Column
-    private LocalDateTime taskTime;
+    private String taskTime;
 
     @Column
     private Integer requestFee;
+
+    @Enumerated(EnumType.STRING)
+    private RequestFeeMethod requestFeeMethod;
+
+    @Enumerated(EnumType.STRING)
+    private TaskFeeMethod taskFeeMethod;
 
     @Column
     private Integer taskFee;
