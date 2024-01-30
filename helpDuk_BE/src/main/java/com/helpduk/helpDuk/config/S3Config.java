@@ -1,4 +1,4 @@
-package com.helpduk.helpDuk.configuration;
+package com.helpduk.helpDuk.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

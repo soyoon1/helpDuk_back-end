@@ -1,5 +1,6 @@
 package com.helpduk.helpDuk.controller;
 
+import com.helpduk.helpDuk.base.dto.TaskDetailDto;
 import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.UserRepository;
 import com.helpduk.helpDuk.service.S3UploadService;
@@ -25,18 +26,6 @@ public class TaskController {
     private final S3UploadService s3UploadService;
     private final TaskService taskService;
 
-    @PostMapping("/user") // 테스트 코드
-    public ResponseEntity<String> createUser(){
-        UserEntity user = UserEntity.builder()
-                .userEmail("dodam@duksung.ac.kr")
-                .nickName("도담")
-                .password("20210841")
-                .temperature(37.96F)
-                .build();
-        userRepository.save(user);
-        return ResponseEntity.ok("사용자 생성");
-    }
-
     @PostMapping("/upload") // 테스트 코드
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file){
         try {
@@ -47,27 +36,6 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-//    @PostMapping("/task")
-//    public ResponseEntity<String> createTask(@RequestParam Integer userId,
-//                                             @RequestParam("title") String title, @RequestParam("content") String content,
-//                                             @RequestParam("locationCategory") String locaCategory, @RequestParam("detailCategory") String detaCategory,
-//                                             @RequestParam("file") MultipartFile file, @RequestParam("taskTime") String taskTime,
-//                                             @RequestParam("requestFee") Integer reqFee, @RequestParam("requestFeeMethod") String reqFeeMeth,
-//                                             @RequestParam("taskFee") Integer taskFee, @RequestParam("taskFeeMethod") String taskFeeMeth){
-//        try {
-//            // 파일 String으로 변환
-//            String fileUrl = s3UploadService.saveFile(file);
-//
-//            taskService.createTask(userId, title, content, locaCategory, detaCategory, fileUrl, taskTime, reqFee, reqFeeMeth, taskFee, taskFeeMeth);
-//
-//            return ResponseEntity.ok("게시글 작성 완료");
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
 
     @PostMapping("/task")
     public ResponseEntity<String> createTaskMultipleImages(@RequestParam Integer userId,
@@ -94,7 +62,16 @@ public class TaskController {
         }
     }
 
-//    @GetMapping("")
+    @GetMapping("/task/{taskId}")
+    public ResponseEntity<TaskDetailDto> getTaskDetail(@PathVariable Integer taskId){
+        //  Integer userId = JwtUtil.getCurrentMemberId();
+        // 일단 userId 1을 넣어줍니다. 방문자 아이디.
+        Integer userId = 1;
+
+        TaskDetailDto taskDetailDto = taskService.createTaskDetailDto(taskId, userId);
+
+        return ResponseEntity.ok(taskDetailDto);
+    }
 
 
 }
