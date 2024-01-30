@@ -46,7 +46,7 @@ public class ChatRoomEntity {
     private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "helpUser")
-    private UserEntity helperUser;
+    @JoinColumn(name = "helper")
+    private UserEntity helper;
 
 }

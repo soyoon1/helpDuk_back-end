@@ -57,11 +57,18 @@ public class ChatRoomService {
         UserEntity user = userRepository.findByUserId(userId).orElseThrow();
         UserEntity helper = userRepository.findByUserId(helperId).orElseThrow();
 
+        // 이미 있는 채팅방인지 체크
+        Optional<ChatRoomEntity> ch = chatRoomRepository.findByUserAndHelper(user, helper);
+
+        if(ch.isPresent()){
+            return ch.get();
+        }
+
         ChatRoomEntity chatRoom = ChatRoomEntity.builder()
                 .roomId(UUID.randomUUID().toString())
                 .roomName(name)
                 .user(user)
-                .helperUser(helper)
+                .helper(helper)
                 .build();
 
         chatRoomRepository.save(chatRoom);
