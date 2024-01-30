@@ -40,12 +40,13 @@ public class ChatRoomEntity {
 //    @JoinColumn(name = "taskId")
 //    private TaskEntity taskId;
 //
-//    @ManyToOne
-//    @JoinColumn(name = "userId")
-//    private UserEntity userId;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "helpUserId")
-//    private UserEntity helperUserId;
+
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private UserEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "helpUser")
+    private UserEntity helperUser;
 
 }
