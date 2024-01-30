@@ -1,10 +1,7 @@
 package com.helpduk.helpDuk.service;
 
 import com.helpduk.helpDuk.base.Enum.*;
-import com.helpduk.helpDuk.base.dto.HomeDto;
-import com.helpduk.helpDuk.base.dto.HomeTaskDto;
-import com.helpduk.helpDuk.base.dto.TaskDetailDto;
-import com.helpduk.helpDuk.base.dto.TaskSearchDto;
+import com.helpduk.helpDuk.base.dto.*;
 import com.helpduk.helpDuk.entity.TaskEntity;
 import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.ChatRoomRepository;
@@ -18,9 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -150,10 +146,17 @@ public class TaskService {
     @Transactional
     public List<HomeTaskDto> getHomeTaskList(){
 
+        return makeHomeTaskDtoList(taskRepository.findAllByOrderByUploadDateDesc());
+    }
+
+    // List<TaskEntity>를 List<HomeTaskDto>로 변환시켜주는 함수
+    @Transactional
+    public List<HomeTaskDto> makeHomeTaskDtoList(List<TaskEntity> taskEntityList){
+
         List<HomeTaskDto> taskList = new ArrayList<>();
 
         // DB에 있는 모든 Task를 최신순으로 가져와 원하는 정보만을 추출
-        for(TaskEntity task: taskRepository.findAllByOrderByUploadDateDesc()){
+        for(TaskEntity task: taskEntityList){
 
             // 카테고리 String 타입으로 합침
             LocationCategory locCat = task.getLocationCategory();
@@ -193,7 +196,7 @@ public class TaskService {
     public TaskSearchDto getKeywordSearch(Integer userId, String keyword){
         String profileImage = userRepository.findByUserId(userId).get().getProfileImage();
 
-        List<HomeTaskDto> taskList = kewordSearchList(keyword);
+        List<HomeTaskDto> taskList = keywordSearchList(keyword);
 
         return TaskSearchDto.builder()
                 .profileImage(profileImage)
@@ -207,42 +210,98 @@ public class TaskService {
 
     // 검색 기능 제목이나 내용에 해당 키워드가 포함되어 있는 task들을 최신순 정렬해 리스트로 반환
     @Transactional
-    public List<HomeTaskDto> kewordSearchList(String keyword){
+    public List<HomeTaskDto> keywordSearchList(String keyword){
+        return makeHomeTaskDtoList(taskRepository.findByTitleOrContentContainingOrderByUploadDateDesc(keyword));
+    }
 
-        List<HomeTaskDto> taskList = new ArrayList<>();
+    // 카테고리별 검색
+    @Transactional
+    public List<TaskEntity> getFilteredTasks(Integer userId, boolean onlyMine,
+                                             boolean school, boolean dormitory, boolean etc,
+                                             boolean print, boolean food, boolean coverFor,
+                                             boolean clean, boolean eventAssistant, boolean bug,
+                                             boolean onlyYet) {
 
-        for (TaskEntity task : taskRepository.findByTitleOrContentContainingOrderByUploadDateDesc(keyword)){ // 나중에 코드 리팩토링 하기
-            // 카테고리 String 타입으로 합침
-            LocationCategory locCat = task.getLocationCategory();
-            DetailCategory detCat = task.getDetailCategory();
-            String category = combineCategory(locCat, detCat);
+        List<TaskEntity> taskEntityList;
 
-            // 시간을 2024-01-30 12:12:00 형식에 맞게 String 타입으로 변환
-            LocalDateTime uploadDate = task.getUploadDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String formattedUploadDate = uploadDate.format(formatter);
-
-            // 이미지가 없는 경우를 고려 -> 만약 이미지가 없다면 null이 반환되도록 함.
-            String firstImage = null;
-            if(!task.getImage().isEmpty()){
-                firstImage =task.getImage().get(0);
-            }
-
-            HomeTaskDto homeTaskDto = HomeTaskDto.builder()
-                    .taskId(task.getTaskId())
-                    .title(task.getTitle())
-                    .imageUrl(firstImage)
-                    .taskStatus(enumToStringTaskStatus(task.getTaskStatus()))
-                    .content(task.getContent())
-                    .category(category)
-                    .uploadDate(formattedUploadDate)
-                    .requestFee(task.getRequestFee())
-                    .build();
-
-            taskList.add(homeTaskDto);
+        if ((school || dormitory || etc) && (print || food || coverFor || clean || eventAssistant || bug)) {
+            taskEntityList = taskRepository.findByLocationCategoryInAndDetailCategoryIn(
+                    getSelectedLocationCategories(school, dormitory, etc),
+                    getSelectedDetailCategories(print, food, coverFor, clean, eventAssistant, bug)
+            );
+        } else if (school || dormitory || etc) {
+            taskEntityList = taskRepository.findByLocationCategoryIn(
+                    getSelectedLocationCategories(school, dormitory, etc)
+            );
+        } else if (print || food || coverFor || clean || eventAssistant || bug) {
+            taskEntityList = taskRepository.findByDetailCategoryIn(
+                    getSelectedDetailCategories(print, food, coverFor, clean, eventAssistant, bug)
+            );
+        } else {
+            return Collections.emptyList();
         }
 
-        return taskList;
+        if (onlyYet) {
+            taskEntityList = filterOnlyYetTasks(taskEntityList);
+        }
+
+        if (onlyMine) {
+            taskEntityList = filterMyTasks(taskEntityList, userId);
+        }
+
+        // 최신순으로 정렬
+        taskEntityList = taskEntityList.stream()
+                .sorted(Comparator.comparing(TaskEntity::getUploadDate).reversed())
+                .collect(Collectors.toList());
+
+        return taskEntityList;
+    }
+
+    private List<TaskEntity> filterOnlyYetTasks(List<TaskEntity> tasks) { // 거래 전인 게시글만 포함
+        return tasks.stream()
+                .filter(task -> task.getTaskStatus() == TaskStatus.YET)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<TaskEntity> filterMyTasks(List<TaskEntity> tasks, Integer userId) { // 내 게시글만 포함
+        return tasks.stream()
+                .filter(task -> task.getUser() != null && task.getUser().getUserId().equals(userId))
+                .collect(Collectors.toList());
+    }
+
+    private List<LocationCategory> getSelectedLocationCategories(boolean school, boolean dormitory, boolean etc) {
+        // 선택된 위치 카테고리 반환
+        List<LocationCategory> selectedCategories = new ArrayList<>();
+        if (school) selectedCategories.add(LocationCategory.SCHOOL);
+        if (dormitory) selectedCategories.add(LocationCategory.DORMITORY);
+        if (etc) selectedCategories.add(LocationCategory.ETC);
+        return selectedCategories;
+    }
+
+    private List<DetailCategory> getSelectedDetailCategories(boolean print, boolean food, boolean coverFor,
+                                                             boolean clean, boolean eventAssistant, boolean bug) {
+        // 선택된 디테일 카테고리 반환
+        List<DetailCategory> selectedCategories = new ArrayList<>();
+        if (print) selectedCategories.add(DetailCategory.PRINT);
+        if (food) selectedCategories.add(DetailCategory.FOOD);
+        if (coverFor) selectedCategories.add(DetailCategory.COVFR);
+        if (clean) selectedCategories.add(DetailCategory.CLEAN);
+        if (eventAssistant) selectedCategories.add(DetailCategory.EVTAST);
+        if (bug) selectedCategories.add(DetailCategory.BUG);
+        return selectedCategories;
+    }
+
+    // 카테고리 검색 결과 반환
+    @Transactional
+    public TaskCategorySearchDto getCatSearchTask(Integer userId, TaskCategoryDto taskCategoryDto, List<TaskEntity> taskList){
+        String profileImage = userRepository.findByUserId(userId).get().getProfileImage();
+        List<HomeTaskDto> homeTaskDtoList = makeHomeTaskDtoList(taskList);
+        return TaskCategorySearchDto.builder()
+                .profileImage(profileImage)
+                .categoryDtoList(taskCategoryDto)
+                .taskList(homeTaskDtoList)
+                .build();
     }
 
 

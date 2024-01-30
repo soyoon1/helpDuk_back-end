@@ -1,8 +1,7 @@
 package com.helpduk.helpDuk.controller;
 
-import com.helpduk.helpDuk.base.dto.HomeDto;
-import com.helpduk.helpDuk.base.dto.TaskDetailDto;
-import com.helpduk.helpDuk.base.dto.TaskSearchDto;
+import com.helpduk.helpDuk.base.dto.*;
+import com.helpduk.helpDuk.entity.TaskEntity;
 import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.UserRepository;
 import com.helpduk.helpDuk.service.S3UploadService;
@@ -87,7 +86,7 @@ public class TaskController {
         return ResponseEntity.ok("거래 현황 변경 완료");
     }
 
-    @GetMapping("/home")
+    @GetMapping("/home") // 홈페이지
     public ResponseEntity<HomeDto> getHomePage(){
 
 //        Integer userId = JwtUtil.getCurrentMemberId();
@@ -98,7 +97,7 @@ public class TaskController {
         return ResponseEntity.ok(homeDto);
     }
 
-    @GetMapping("/tasks/search")
+    @GetMapping("/tasks/search") // 키워드 검색
     public ResponseEntity<TaskSearchDto> getSearchTask(@RequestParam(value = "keyword") String keyword){
 
         //        Integer userId = JwtUtil.getCurrentMemberId();
@@ -107,6 +106,40 @@ public class TaskController {
         TaskSearchDto taskSearchDto = taskService.getKeywordSearch(userId, keyword);
 
         return ResponseEntity.ok(taskSearchDto);
+    }
+
+    @GetMapping("/tasks/category") // 카테고리 검색 -> 리팩토링해야 할 것 같음 ... @RequestParam 이 너무 많음.
+    public ResponseEntity<TaskCategorySearchDto> getCategorySearchTask(@RequestParam(value = "onlyYet") boolean onlyYet, @RequestParam(value = "onlyMine") boolean onlyMine,
+                                                                       @RequestParam(value = "school") boolean school, @RequestParam(value = "dormitory") boolean dormitory,
+                                                                       @RequestParam(value = "etc") boolean etc, @RequestParam(value = "print") boolean print,
+                                                                       @RequestParam(value = "food") boolean food, @RequestParam(value = "coverFor") boolean coverFor,
+                                                                       @RequestParam(value = "clean") boolean clean, @RequestParam(value = "eventAssistant") boolean eventAssistant,
+                                                                       @RequestParam(value = "bug") boolean bug){
+
+        //        Integer userId = JwtUtil.getCurrentMemberId();
+        // 사용자가 1이라고 가정 사용자의 프로필을 가져와야 하기 때문에 필요하다. 로그인을 하지 않을 경우를 고려해야 한다. -> 추후 개발 예정
+        Integer userId = 1;
+
+        List<TaskEntity> taskList = taskService.getFilteredTasks(userId, onlyMine, school, dormitory, etc, print, food, coverFor, clean, eventAssistant, bug, onlyYet);
+
+
+        TaskCategoryDto taskCategoryDto = TaskCategoryDto.builder()
+                .onlyYet(onlyYet)
+                .onlyMine(onlyMine)
+                .school(school)
+                .dormitory(dormitory)
+                .etc(etc)
+                .print(print)
+                .food(food)
+                .coverFor(coverFor)
+                .clean(clean)
+                .eventAssistant(eventAssistant)
+                .bug(bug)
+                .build();
+
+        TaskCategorySearchDto taskCategorySearchDto = taskService.getCatSearchTask(userId, taskCategoryDto, taskList);
+
+        return ResponseEntity.ok(taskCategorySearchDto);
     }
 
 
