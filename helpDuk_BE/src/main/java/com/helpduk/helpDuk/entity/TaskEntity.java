@@ -68,9 +68,9 @@ public class TaskEntity {
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private UserEntity userId;  // UserId가 UserEntity를 의미한다는 것을 명심해야 함.
+    private UserEntity user;  // userId를 user로 변경
 
     @ManyToOne
     @JoinColumn(name = "acceptUserId")
-    private UserEntity acceptUserId;
+    private UserEntity acceptUser; // acceptUserId를 acceptUser로 변경
 }

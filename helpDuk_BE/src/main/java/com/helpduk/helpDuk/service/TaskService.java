@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -55,7 +56,7 @@ public class TaskService {
                 .requestFeeMethod(requestFeeMethod)
                 .taskFee(taskFee)
                 .taskFeeMethod(taskFeeMethod)
-                .userId(user)
+                .user(user)
                 .build();
 
         taskRepository.save(task);
@@ -83,9 +84,9 @@ public class TaskService {
 
         return TaskDetailDto.builder()
                 .imageUrl(task.getImage())
-                .nickName(task.getUserId().getNickName())
-                .profileImage(task.getUserId().getProfileImage())
-                .temperature(task.getUserId().getTemperature())
+                .nickName(task.getUser().getNickName())
+                .profileImage(task.getUser().getProfileImage())
+                .temperature(task.getUser().getTemperature())
                 .title(task.getTitle())
                 .category(category)
                 .uploadDate(formattedUploadDate)
@@ -97,9 +98,35 @@ public class TaskService {
                 .content(task.getContent())
                 .chattingCount(chatRoomRepository.countByTaskId(task))
                 .taskStatus(enumToStringTaskStatus(task.getTaskStatus()))
-                .isItMine(task.getUserId().getUserId().equals(userId))
+                .isItMine(task.getUser().getUserId().equals(userId))
                 .build();
     }
+
+    // 거래 현황 수정
+    @Transactional
+    public void updateTaskStatus(Integer taskId, Integer visitUserId, String taskStatus) throws AccessDeniedException {
+
+        // enum 타입으로 변환
+        TaskStatus status = stringToEnumTaskStatus(taskStatus);
+
+        Optional<TaskEntity> optionalTask = taskRepository.findByTaskId(taskId);
+        if(optionalTask.isPresent()){
+            TaskEntity task = optionalTask.get();
+
+            // 지금 방문자와 task의 작성자가 같은지를 판단하기
+            if(task.getUser().getUserId().equals(visitUserId)){
+                task.setTaskStatus(status);
+                taskRepository.save(task);
+            }else{
+                // 작성자와 방문자가 다른 경우 거래 현황을 수정할 수 없도록 접근 거부 예외 던지기
+                throw new AccessDeniedException("You do not have permission to update this task.");
+            }
+        }else{
+            // 해당 taskId에 해당하는 Task가 없는 경우 예외처리
+            throw new EntityNotFoundException("Task with ID " + taskId + " not found");
+        }
+    }
+
 
     @Transactional
     public String combineCategory(LocationCategory locationCategory, DetailCategory detailCategory){
@@ -210,7 +237,7 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskStatus StringToEnumTaskStatus(String taskStatus){
+    public TaskStatus stringToEnumTaskStatus(String taskStatus){
         return switch (taskStatus){
             case "거래 전" -> TaskStatus.YET;
             case "예약 중" -> TaskStatus.RESERVATION;

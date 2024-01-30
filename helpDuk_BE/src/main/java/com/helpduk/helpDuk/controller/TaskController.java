@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +72,17 @@ public class TaskController {
         TaskDetailDto taskDetailDto = taskService.createTaskDetailDto(taskId, userId);
 
         return ResponseEntity.ok(taskDetailDto);
+    }
+
+    @PutMapping("/task/{taskId}")
+    public ResponseEntity<String> updateTaskStatus(@PathVariable Integer taskId, @RequestBody String taskStatus) throws AccessDeniedException {
+
+        // 일단 방문자가 1이라고 가정
+        // Integer userId = JwtUtil.getCurrentMemberId();
+        Integer visitUserId = 1;
+
+        taskService.updateTaskStatus(taskId, visitUserId, taskStatus);
+        return ResponseEntity.ok("거래 현황 변경 완료");
     }
 
 
