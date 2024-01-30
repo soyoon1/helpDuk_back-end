@@ -1,5 +1,6 @@
 package com.helpduk.helpDuk.controller;
 
+import com.helpduk.helpDuk.base.dto.HomeDto;
 import com.helpduk.helpDuk.base.dto.TaskDetailDto;
 import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.UserRepository;
@@ -38,7 +39,7 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/task")
+    @PostMapping("/task") // 게시글 작성
     public ResponseEntity<String> createTaskMultipleImages(@RequestParam Integer userId,
                                                            @RequestParam("title") String title, @RequestParam("content") String content,
                                                            @RequestParam("locationCategory") String locaCategory, @RequestParam("detailCategory") String detaCategory,
@@ -63,7 +64,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/task/{taskId}")
+    @GetMapping("/task/{taskId}") // 게시글 상세 보기
     public ResponseEntity<TaskDetailDto> getTaskDetail(@PathVariable Integer taskId){
         //  Integer userId = JwtUtil.getCurrentMemberId();
         // 일단 userId 1을 넣어줍니다. 방문자 아이디.
@@ -74,16 +75,30 @@ public class TaskController {
         return ResponseEntity.ok(taskDetailDto);
     }
 
-    @PutMapping("/task/{taskId}")
+    @PutMapping("/task/{taskId}") // 심부를 거래 현황 변경
     public ResponseEntity<String> updateTaskStatus(@PathVariable Integer taskId, @RequestBody String taskStatus) throws AccessDeniedException {
 
         // 일단 방문자가 1이라고 가정
-        // Integer userId = JwtUtil.getCurrentMemberId();
+        // Integer visitUserId = JwtUtil.getCurrentMemberId();
         Integer visitUserId = 1;
 
         taskService.updateTaskStatus(taskId, visitUserId, taskStatus);
         return ResponseEntity.ok("거래 현황 변경 완료");
     }
+
+    @GetMapping("/home")
+    public ResponseEntity<HomeDto> getHomePage(){
+
+//        Integer userId = JwtUtil.getCurrentMemberId();
+        // 사용자가 1이라고 가정 사용자의 프로필을 가져와야 하기 때문에 필요하다. 로그인을 하지 않을 경우를 고려해야 한다. -> 추후 개발 예정
+        Integer userId = 1;
+        HomeDto homeDto = taskService.getHomePage(userId);
+
+        return ResponseEntity.ok(homeDto);
+    }
+
+
+
 
 
 }

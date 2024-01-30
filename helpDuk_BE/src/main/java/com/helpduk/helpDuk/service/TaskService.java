@@ -1,6 +1,8 @@
 package com.helpduk.helpDuk.service;
 
 import com.helpduk.helpDuk.base.Enum.*;
+import com.helpduk.helpDuk.base.dto.HomeDto;
+import com.helpduk.helpDuk.base.dto.HomeTaskDto;
 import com.helpduk.helpDuk.base.dto.TaskDetailDto;
 import com.helpduk.helpDuk.entity.TaskEntity;
 import com.helpduk.helpDuk.entity.UserEntity;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,6 +128,63 @@ public class TaskService {
             // 해당 taskId에 해당하는 Task가 없는 경우 예외처리
             throw new EntityNotFoundException("Task with ID " + taskId + " not found");
         }
+    }
+
+    // 홈페이지 화면
+    @Transactional
+    public HomeDto getHomePage(Integer userId){
+        String profileImage = userRepository.findByUserId(userId).get().getProfileImage();
+
+        List<HomeTaskDto> taskList = getHomeTaskList();
+
+        HomeDto homeDto = HomeDto.builder()
+                .profileImage(profileImage)
+                .taskList(taskList)
+                .build();
+
+        return homeDto;
+    }
+
+    // 홈페이지 화면에서 의뢰 목록 가져오기
+    @Transactional
+    public List<HomeTaskDto> getHomeTaskList(){
+
+        List<HomeTaskDto> taskList = new ArrayList<>();
+
+        // DB에 있는 모든 Task를 최신순으로 가져와 원하는 정보만을 추출
+        for(TaskEntity task: taskRepository.findAllByOrderByUploadDateDesc()){
+
+            // 카테고리 String 타입으로 합침
+            LocationCategory locCat = task.getLocationCategory();
+            DetailCategory detCat = task.getDetailCategory();
+            String category = combineCategory(locCat, detCat);
+
+            // 시간을 2024-01-30 12:12:00 형식에 맞게 String 타입으로 변환
+            LocalDateTime uploadDate = task.getUploadDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedUploadDate = uploadDate.format(formatter);
+
+            // 이미지가 없는 경우를 고려 -> 만약 이미지가 없다면 null이 반환되도록 함.
+            String firstImage = null;
+            if(!task.getImage().isEmpty()){
+                firstImage =task.getImage().get(0);
+            }
+
+            HomeTaskDto homeTaskDto = HomeTaskDto.builder()
+                    .taskId(task.getTaskId())
+                    .title(task.getTitle())
+                    .imageUrl(firstImage)
+                    .taskStatus(enumToStringTaskStatus(task.getTaskStatus()))
+                    .content(task.getContent())
+                    .category(category)
+                    .uploadDate(formattedUploadDate)
+                    .requestFee(task.getRequestFee())
+                    .build();
+
+            taskList.add(homeTaskDto);
+        };
+
+        return taskList;
     }
 
 
