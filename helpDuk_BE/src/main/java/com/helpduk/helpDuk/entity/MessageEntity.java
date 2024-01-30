@@ -24,14 +24,29 @@ public class MessageEntity {
     @JoinColumn(name = "senderId")
     private UserEntity senderId;
 
+//    @ManyToOne
+//    @JoinColumn(name = "roomId")
+//    private ChatRoomEntity roomId;
+
+    @Column(nullable = false)
+    private String roomId;
+
     @ManyToOne
-    @JoinColumn(name = "roomId")
-    private ChatRoomEntity roomId;
+    @JoinColumn(name = "roomId", referencedColumnName = "roomId", insertable = false, updatable = false)
+    private ChatRoomEntity chatRoomEntity;
+
 
     @Column(nullable = false)
     private String content;
 
     @CreatedDate
     private LocalDateTime sendTime;
+
+
+    public enum MessageType {
+        ENTER, TALK
+    }
+
+    private MessageType type;
 
 }
