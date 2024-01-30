@@ -60,6 +60,7 @@
                     var params = new URLSearchParams();
                     params.append("name",this.room_name);
                     params.append("userId",1);
+                    params.append("helperId",2);
                     axios.post('/chat/room', params)
                         .then(
                             response => {

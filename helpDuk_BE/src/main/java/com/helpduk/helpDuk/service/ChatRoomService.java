@@ -52,14 +52,16 @@ public class ChatRoomService {
     }
 
     //채팅방 생성
-    public ChatRoomEntity createRoom(String name, Integer userId) {
+    public ChatRoomEntity createRoom(String name, Integer userId, Integer helperId) {
 
         UserEntity user = userRepository.findByUserId(userId).orElseThrow();
+        UserEntity helper = userRepository.findByUserId(helperId).orElseThrow();
 
         ChatRoomEntity chatRoom = ChatRoomEntity.builder()
                 .roomId(UUID.randomUUID().toString())
                 .roomName(name)
                 .user(user)
+                .helperUser(helper)
                 .build();
 
         chatRoomRepository.save(chatRoom);
