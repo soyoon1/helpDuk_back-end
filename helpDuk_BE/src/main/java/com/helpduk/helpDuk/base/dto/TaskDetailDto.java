@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class TaskDetailDto {
+    // 상세 페이지에 반환할 내용
     private List<String> imageUrl;
     private String nickName;
     private String profileImage;

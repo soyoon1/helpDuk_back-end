@@ -4,6 +4,7 @@ import com.helpduk.helpDuk.base.Enum.*;
 import com.helpduk.helpDuk.base.dto.HomeDto;
 import com.helpduk.helpDuk.base.dto.HomeTaskDto;
 import com.helpduk.helpDuk.base.dto.TaskDetailDto;
+import com.helpduk.helpDuk.base.dto.TaskSearchDto;
 import com.helpduk.helpDuk.entity.TaskEntity;
 import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.ChatRoomRepository;
@@ -29,6 +30,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final ChatRoomRepository chatRoomRepository;
 
+    // Task 생성 후 저장
     @Transactional
     public void createTask(Integer userId, String title, String content, String locaCategory,
                            String detaCategory, List<String> files, String taskTime, Integer reqFee, String reqFeeMeth, Integer taskFee, String taskFeeMeth){
@@ -65,6 +67,7 @@ public class TaskService {
         taskRepository.save(task);
     }
 
+    // 상세 페이지
     @Transactional
     public TaskDetailDto createTaskDetailDto(Integer taskId, Integer userId){ // 방문자 아이디가 들어옴.
         // 작성자와 방문자를 구분해야 함. 작성자 아이디는 task의 userId를 사용해야 함.
@@ -137,12 +140,10 @@ public class TaskService {
 
         List<HomeTaskDto> taskList = getHomeTaskList();
 
-        HomeDto homeDto = HomeDto.builder()
+        return HomeDto.builder()
                 .profileImage(profileImage)
                 .taskList(taskList)
                 .build();
-
-        return homeDto;
     }
 
     // 홈페이지 화면에서 의뢰 목록 가져오기
@@ -187,8 +188,65 @@ public class TaskService {
         return taskList;
     }
 
-
+    // 검색 기능 사용자 프로필 이미지, 사용한 키워드, List<HomeTaskDto> 갖고 있는 DTO(-> TaskSearchDto)  반환하기
     @Transactional
+    public TaskSearchDto getKeywordSearch(Integer userId, String keyword){
+        String profileImage = userRepository.findByUserId(userId).get().getProfileImage();
+
+        List<HomeTaskDto> taskList = kewordSearchList(keyword);
+
+        return TaskSearchDto.builder()
+                .profileImage(profileImage)
+                .keyword(keyword)
+                .taskList(taskList)
+                .build();
+    }
+
+
+
+
+    // 검색 기능 제목이나 내용에 해당 키워드가 포함되어 있는 task들을 최신순 정렬해 리스트로 반환
+    @Transactional
+    public List<HomeTaskDto> kewordSearchList(String keyword){
+
+        List<HomeTaskDto> taskList = new ArrayList<>();
+
+        for (TaskEntity task : taskRepository.findByTitleOrContentContainingOrderByUploadDateDesc(keyword)){ // 나중에 코드 리팩토링 하기
+            // 카테고리 String 타입으로 합침
+            LocationCategory locCat = task.getLocationCategory();
+            DetailCategory detCat = task.getDetailCategory();
+            String category = combineCategory(locCat, detCat);
+
+            // 시간을 2024-01-30 12:12:00 형식에 맞게 String 타입으로 변환
+            LocalDateTime uploadDate = task.getUploadDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedUploadDate = uploadDate.format(formatter);
+
+            // 이미지가 없는 경우를 고려 -> 만약 이미지가 없다면 null이 반환되도록 함.
+            String firstImage = null;
+            if(!task.getImage().isEmpty()){
+                firstImage =task.getImage().get(0);
+            }
+
+            HomeTaskDto homeTaskDto = HomeTaskDto.builder()
+                    .taskId(task.getTaskId())
+                    .title(task.getTitle())
+                    .imageUrl(firstImage)
+                    .taskStatus(enumToStringTaskStatus(task.getTaskStatus()))
+                    .content(task.getContent())
+                    .category(category)
+                    .uploadDate(formattedUploadDate)
+                    .requestFee(task.getRequestFee())
+                    .build();
+
+            taskList.add(homeTaskDto);
+        }
+
+        return taskList;
+    }
+
+
+    @Transactional // 두 카테고리를 결합해 보기 좋게 String 타입으로 변환
     public String combineCategory(LocationCategory locationCategory, DetailCategory detailCategory){
         String locCat = enumToStringLocationCategory(locationCategory);
         String detCat = enumToStringDetailCategory(detailCategory);

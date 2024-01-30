@@ -2,6 +2,7 @@ package com.helpduk.helpDuk.controller;
 
 import com.helpduk.helpDuk.base.dto.HomeDto;
 import com.helpduk.helpDuk.base.dto.TaskDetailDto;
+import com.helpduk.helpDuk.base.dto.TaskSearchDto;
 import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.UserRepository;
 import com.helpduk.helpDuk.service.S3UploadService;
@@ -96,6 +97,18 @@ public class TaskController {
 
         return ResponseEntity.ok(homeDto);
     }
+
+    @GetMapping("/tasks/search")
+    public ResponseEntity<TaskSearchDto> getSearchTask(@RequestParam(value = "keyword") String keyword){
+
+        //        Integer userId = JwtUtil.getCurrentMemberId();
+        // 사용자가 1이라고 가정 사용자의 프로필을 가져와야 하기 때문에 필요하다. 로그인을 하지 않을 경우를 고려해야 한다. -> 추후 개발 예정
+        Integer userId = 1;
+        TaskSearchDto taskSearchDto = taskService.getKeywordSearch(userId, keyword);
+
+        return ResponseEntity.ok(taskSearchDto);
+    }
+
 
 
 
