@@ -36,14 +36,12 @@ public class ChatRoomService {
 
     //채팅방 하나 불러오기
     public ChatRoomEntity findById(String roomId) {
-//        return chatRooms.get(roomId);
         ChatRoomEntity chatRoom = chatRoomRepository.findByRoomId(roomId).orElseThrow();
         return chatRoom;
     }
 
     //채팅방 생성
     public ChatRoomEntity createRoom(String name) {
-        // ChatRoomEntity chatRoom = ChatRoomEntity.create(name);
 
         ChatRoomEntity chatRoom = ChatRoomEntity.builder()
                 .roomId(UUID.randomUUID().toString())
