@@ -34,12 +34,10 @@ public class ChatRoomEntity {
         return room;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "taskId")
+    private TaskEntity taskId;
 
-//
-//    @ManyToOne
-//    @JoinColumn(name = "taskId")
-//    private TaskEntity taskId;
-//
 
     @ManyToOne
     @JoinColumn(name = "user")
