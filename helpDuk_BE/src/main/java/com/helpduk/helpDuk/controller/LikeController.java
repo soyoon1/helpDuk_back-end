@@ -16,18 +16,18 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/create")
-    public String createLike(@RequestParam Integer userId, @RequestParam Integer likeUserId){
+    public ResponseEntity<String> createLike(@RequestParam Integer userId, @RequestParam Integer likeUserId){
 
         likeService.createLike(userId, likeUserId);
 
-        return "좋아요 생성 완료";
+        return ResponseEntity.ok("좋아요 생성 완료");
     }
 
     @DeleteMapping("/delete")
-    public String deleteLike(@RequestParam Integer userId, @RequestParam Integer likeUserId){
+    public ResponseEntity<String> deleteLike(@RequestParam Integer userId, @RequestParam Integer likeUserId){
         likeService.deleteLike(userId, likeUserId);
 
-       return "좋아요 취소 완료";
+       return ResponseEntity.ok("좋아요 취소 완료");
     }
 
 
