@@ -1,5 +1,6 @@
 package com.helpduk.helpDuk.entity;
 
+import com.helpduk.helpDuk.base.Enum.MessageType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,12 +22,8 @@ public class MessageEntity {
     private Integer messageId;
 
     @ManyToOne
-    @JoinColumn(name = "senderId")
+    @JoinColumn(name = "senderId", referencedColumnName = "userId")
     private UserEntity senderId;
-
-//    @ManyToOne
-//    @JoinColumn(name = "roomId")
-//    private ChatRoomEntity roomId;
 
     @Column(nullable = false)
     private String roomId;
@@ -35,17 +32,11 @@ public class MessageEntity {
     @JoinColumn(name = "roomId", referencedColumnName = "roomId", insertable = false, updatable = false)
     private ChatRoomEntity chatRoomEntity;
 
-
     @Column(nullable = false)
     private String content;
 
     @CreatedDate
     private LocalDateTime sendTime;
-
-
-    public enum MessageType {
-        ENTER, TALK
-    }
 
     private MessageType type;
 
