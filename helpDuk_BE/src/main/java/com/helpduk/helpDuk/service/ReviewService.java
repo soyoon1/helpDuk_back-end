@@ -2,6 +2,8 @@ package com.helpduk.helpDuk.service;
 
 import com.helpduk.helpDuk.base.Enum.DetailCategory;
 import com.helpduk.helpDuk.base.Enum.TaskStatus;
+import com.helpduk.helpDuk.base.dto.ReviewDetailDto;
+import com.helpduk.helpDuk.base.dto.ReviewDto;
 import com.helpduk.helpDuk.base.dto.ReviewRequestDto;
 import com.helpduk.helpDuk.entity.ChatRoomEntity;
 import com.helpduk.helpDuk.entity.ReviewEntity;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +74,7 @@ public class ReviewService {
             default ->  0F;
         };
 
-        Float updateTemp = userOriginTemp + plusTemp;
+        float updateTemp = userOriginTemp + plusTemp;
 
         // 최고 온도와 최저 온도를 설정해줘야 함.
         if (updateTemp > 100F)
@@ -81,5 +85,34 @@ public class ReviewService {
         helperUser.setTemperature(updateTemp);
         userRepository.save(helperUser);
     }
+
+    // 마이페이지 리뷰 상세 페이지
+    @Transactional
+    public ReviewDetailDto getReviewDetail(Integer userId){
+
+        // acceptUser와 매개변수 userId의 User이 동일한 Review 데이터 리스트를 가져옴
+        List<ReviewEntity> reviewEntityList = reviewRepository.findByAcceptUser(userRepository.findByUserId(userId).orElseThrow());
+
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+
+        for(ReviewEntity review: reviewEntityList){
+            ReviewDto reviewDto = ReviewDto.builder()
+                    .userId(review.getUser().getUserId())
+                    .profileImage(review.getUser().getProfileImage())
+                    .nickName(review.getUser().getNickName())
+                    .content(review.getContent())
+                    .build();
+            reviewDtoList.add(reviewDto);
+        }
+
+        Integer reviewCnt = reviewDtoList.size();
+
+        return ReviewDetailDto.builder()
+                .reviewCnt(reviewCnt)
+                .reviewDtoList(reviewDtoList)
+                .build();
+    }
+
+
 
 }
