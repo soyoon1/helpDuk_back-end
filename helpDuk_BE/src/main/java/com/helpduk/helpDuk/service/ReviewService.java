@@ -72,6 +72,12 @@ public class ReviewService {
 
         Float updateTemp = userOriginTemp + plusTemp;
 
+        // 최고 온도와 최저 온도를 설정해줘야 함.
+        if (updateTemp > 100F)
+            updateTemp = 100F;
+        else if (updateTemp < 0F)
+            updateTemp = 0F;
+
         helperUser.setTemperature(updateTemp);
         userRepository.save(helperUser);
     }
