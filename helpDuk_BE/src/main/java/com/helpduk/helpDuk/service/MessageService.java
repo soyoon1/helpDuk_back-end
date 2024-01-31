@@ -10,6 +10,8 @@ import com.helpduk.helpDuk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MessageService {
@@ -21,5 +23,11 @@ public class MessageService {
 
     public void saveMessage(MessageEntity message){
         messageRepository.save(message);
+    }
+
+    public List<ChatMessageDto> getAllMessages(String roomId){
+
+        return messageRepository.findByRoomId(roomId);
+
     }
 }

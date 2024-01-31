@@ -11,6 +11,8 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Controller
 @RequiredArgsConstructor
@@ -31,4 +33,9 @@ public class MessageController {
         sendingOperations.convertAndSend("/topic/chat/room/"+message.getRoomId(),message);
     }
 
+
+    @GetMapping("/chat/getAllMessages")
+    public List<ChatMessageDto> getAllMessages(@RequestParam String roomId){
+        return messageService.getAllMessages(roomId);
+    }
 }

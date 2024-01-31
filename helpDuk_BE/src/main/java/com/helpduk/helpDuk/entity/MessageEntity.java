@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 public class MessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "message_id")
     private Integer messageId;
 
     @ManyToOne
