@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class ReviewRequestDto {
-    private Integer roomId; // 추후 String 타입으로 개발 예정
+    private String roomId;
     private Integer score;
     private String content;
 
