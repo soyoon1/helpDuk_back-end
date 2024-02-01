@@ -36,26 +36,26 @@ public class ReviewService {
         ChatRoomEntity room = chatRoomRepository.findById(reviewRequestDto.getRoomId()).orElseThrow();
 
         // 리뷰 작성자와 의뢰글 작성자가 같은지 확인. 같아야지만 리뷰를 작성할 수 있음.
-        if(userRepository.findByUserId(userId).orElseThrow() != room.getUserId()){
+        if(userRepository.findByUserId(userId).orElseThrow() != room.getUser()){
             throw new AccessDeniedException("You do not have permission to update this task.");
         }
 
         // 해당 의뢰글에 accept_user_id 추가해 줌. + 거래 현황을 거래 완료로 바꿔 줌.
         TaskEntity task = room.getTaskId();
-        task.setAcceptUser(room.getHelperUserId());
+        task.setAcceptUser(room.getHelper());
         task.setTaskStatus(TaskStatus.DONE);
         taskRepository.save(task);
 
         // 헬퍼의 temperature 업데이트
-        UserEntity helperUser = room.getHelperUserId();
+        UserEntity helperUser = room.getHelper();
         updateUserTemperature(helperUser, reviewRequestDto.getScore());
 
         // 리뷰 생성
         ReviewEntity review = ReviewEntity.builder()
                 .content(reviewRequestDto.getContent())
-                .acceptUser(room.getHelperUserId())
+                .acceptUser(room.getHelper())
                 .task(room.getTaskId())
-                .user(room.getUserId())
+                .user(room.getUser())
                 .build();
 
         reviewRepository.save(review);
