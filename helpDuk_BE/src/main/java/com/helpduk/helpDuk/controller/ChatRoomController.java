@@ -1,5 +1,6 @@
 package com.helpduk.helpDuk.controller;
 
+import com.helpduk.helpDuk.base.dto.chat.ChatRoomListDto;
 import com.helpduk.helpDuk.entity.ChatRoomEntity;
 import com.helpduk.helpDuk.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +26,15 @@ public class ChatRoomController {
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms/{userId}")
     @ResponseBody
-    public List<ChatRoomEntity> room(@PathVariable Integer userId) {
+    public List<ChatRoomListDto> room(@PathVariable Integer userId) {
         return chatService.findAllRoom(userId);
     }
 
     // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoomEntity createRoom(@RequestParam String name, @RequestParam Integer userId, @RequestParam Integer helperId) {
-        return chatService.createRoom(name, userId, helperId);
+    public ChatRoomEntity createRoom(@RequestParam Integer userId, @RequestParam Integer helperId) {
+        return chatService.createRoom(userId, helperId);
     }
 
     // 채팅방 입장 화면
