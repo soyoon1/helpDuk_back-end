@@ -1,12 +1,14 @@
 package com.helpduk.helpDuk.config.security;
 
 import java.io.IOException;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,9 +27,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest servletRequest,
         HttpServletResponse servletResponse,
         FilterChain filterChain) throws ServletException, IOException {
+
+        // 헤더에서 JWT 받아오기
         String token = jwtTokenProvider.resolveToken(servletRequest);
         LOGGER.info("[doFilterInternal] token 값 추출 완료. token : {}", token);
 
+        // 유효한 토큰인지 확인 -> validation 진행
         LOGGER.info("[doFilterInternal] token 값 유효성 체크 시작");
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);

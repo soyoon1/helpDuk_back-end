@@ -2,22 +2,22 @@ package com.helpduk.helpDuk.controller;
 
 import com.helpduk.helpDuk.base.Enum.dto.SignInResultDto;
 import com.helpduk.helpDuk.base.Enum.dto.SignUpResultDto;
+import com.helpduk.helpDuk.config.security.JwtTokenProvider;
 import com.helpduk.helpDuk.service.SignService;
+import io.jsonwebtoken.Jwt;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.HashMap;
 import java.util.Map;
+
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 // 예제 13.28
 @RestController
@@ -26,11 +26,23 @@ public class SignController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(SignController.class);
     private final SignService signService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public SignController(SignService signService) {
+    public SignController(SignService signService, JwtTokenProvider jwtTokenProvider) {
         this.signService = signService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
+
+//    @PostMapping("/send/mail")
+//    public String MailSend(String mail){
+//
+//        int number = signService.sendMail(mail);
+//
+//        String num = "" + number;
+//
+//        return num;
+//    }
 
     @PostMapping(value = "/sign-in")
     public SignInResultDto signIn(
@@ -50,7 +62,7 @@ public class SignController {
     @PostMapping(value = "/sign-up")
     public SignUpResultDto signUp(
         @ApiParam(value = "Email", required = true) @RequestParam String userEmail,
-        @ApiParam(value = "Password", required = true) @RequestParam String password ) {
+        @ApiParam(value = "Password", required = true) @RequestParam String password ) throws Exception {
         LOGGER.info("[signUp] 회원가입을 수행합니다. id : {}, password : ****,", userEmail);
         SignUpResultDto signUpResultDto = signService.signUp(userEmail, password, "익명의 유저", 36.5F);
 

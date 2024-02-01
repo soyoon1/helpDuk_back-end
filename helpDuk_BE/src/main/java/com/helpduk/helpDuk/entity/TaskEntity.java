@@ -1,19 +1,20 @@
 package com.helpduk.helpDuk.entity;
 
-import com.helpduk.helpDuk.base.Enum.DetailCategory;
-import com.helpduk.helpDuk.base.Enum.LocationCategory;
-import com.helpduk.helpDuk.base.Enum.TaskStatus;
+import com.helpduk.helpDuk.base.Enum.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -45,23 +46,31 @@ public class TaskEntity {
     @Column(nullable = false)
     private DetailCategory detailCategory;
 
-    @Column
-    private String image;
+    @ElementCollection
+    @CollectionTable(name = "task_images", joinColumns = @JoinColumn(name = "task_id"))
+    @Column(name = "image")
+    private List<String> image;
 
     @Column
-    private LocalDateTime taskTime;
+    private String taskTime;
 
     @Column
     private Integer requestFee;
+
+    @Enumerated(EnumType.STRING)
+    private RequestFeeMethod requestFeeMethod;
+
+    @Enumerated(EnumType.STRING)
+    private TaskFeeMethod taskFeeMethod;
 
     @Column
     private Integer taskFee;
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private UserEntity userId;
+    private UserEntity user;  // userId를 user로 변경
 
     @ManyToOne
     @JoinColumn(name = "acceptUserId")
-    private UserEntity acceptUserId;
+    private UserEntity acceptUser; // acceptUserId를 acceptUser로 변경
 }

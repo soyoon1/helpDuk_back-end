@@ -9,10 +9,10 @@
 
 package com.helpduk.helpDuk.config.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.helpduk.helpDuk.entity.UserEntity;
+import com.helpduk.helpDuk.service.impl.UserDetailsServiceImpl;
+import io.jsonwebtoken.*;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
@@ -23,8 +23,10 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -44,7 +46,7 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
 
     private final Logger LOGGER = LoggerFactory.getLogger(JwtTokenProvider.class);
-    private final UserDetailsService userDetailsService; // Spring Security 에서 제공하는 서비스 레이어
+    private final UserDetailsServiceImpl userDetailsService; // Spring Security 에서 제공하는 서비스 레이어
 
     @Value("${jwt.secret}")
     private String secretKey = "secretKey";
@@ -68,7 +70,6 @@ public class JwtTokenProvider {
     public String createToken(String userEmail) {
         LOGGER.info("[createToken] 토큰 생성 시작");
         Claims claims = Jwts.claims().setSubject(userEmail);
-//        claims.put("roles", roles);
 
         Date now = new Date();
         String token = Jwts.builder()
@@ -86,9 +87,9 @@ public class JwtTokenProvider {
     // JWT 토큰으로 인증 정보 조회
     public Authentication getAuthentication(String token) {
         LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 시작");
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
+        UserEntity userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
         LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}",
-            userDetails.getUsername());
+            userDetails.getUserEmail());
         return new UsernamePasswordAuthenticationToken(userDetails, "");
     }
 
@@ -126,5 +127,21 @@ public class JwtTokenProvider {
             LOGGER.info("[validateToken] 토큰 유효 체크 예외 발생");
             return false;
         }
+    }
+
+    public static int getCurrentMemberId(){
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication == null || authentication.getName() == null){
+            throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
+        }
+
+        String username = authentication.getName();
+
+        if (!username.matches("\\d+")) {
+            throw new RuntimeException("올바르지 않은 사용자 ID 형식입니다.");
+        }
+
+        return Integer.parseInt(username);
     }
 }

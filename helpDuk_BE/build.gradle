@@ -52,6 +52,10 @@ dependencies {
 
 	// JAXB Runtime
 	implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+
+//	//  메일전송
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {
