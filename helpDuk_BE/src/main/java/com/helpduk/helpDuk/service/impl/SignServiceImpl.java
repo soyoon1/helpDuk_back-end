@@ -156,7 +156,7 @@ public class SignServiceImpl implements SignService {
         }
 
         if (!userEmail.endsWith("@duksung.ac.kr")) {
-            throw new Exception("Only emails ending with @duksung.ac.kr are allowed to register.");
+            throw new Exception("덕성 이메일만 가입할 수 있습니다.");
         }
             UserEntity user = new UserEntity();
             user = UserEntity.builder()
