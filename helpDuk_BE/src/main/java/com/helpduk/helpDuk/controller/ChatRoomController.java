@@ -2,6 +2,7 @@ package com.helpduk.helpDuk.controller;
 
 import com.helpduk.helpDuk.base.dto.chat.ChatRoomInfoDto;
 import com.helpduk.helpDuk.base.dto.chat.ChatRoomListDto;
+import com.helpduk.helpDuk.config.security.JwtTokenProvider;
 import com.helpduk.helpDuk.entity.ChatRoomEntity;
 import com.helpduk.helpDuk.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +27,16 @@ public class ChatRoomController {
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms/{userId}")
     @ResponseBody
-    public List<ChatRoomListDto> room(@PathVariable Integer userId) {
+    public List<ChatRoomListDto> room() {
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
         return chatService.findAllRoom(userId);
     }
 
     // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoomInfoDto createRoom(@RequestParam Integer userId, @RequestParam Integer helperId, @RequestParam Integer taskId) {
+    public ChatRoomInfoDto createRoom(@RequestParam Integer helperId, @RequestParam Integer taskId) {
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
         return chatService.createRoom(userId, helperId, taskId);
     }
 
@@ -48,7 +51,9 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoomInfoDto roomInfo(@PathVariable String roomId) {
-        ChatRoomInfoDto chatRoom = chatService.findById(roomId);
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
+
+        ChatRoomInfoDto chatRoom = chatService.findById(userId, roomId);
 
         return chatRoom;
     }

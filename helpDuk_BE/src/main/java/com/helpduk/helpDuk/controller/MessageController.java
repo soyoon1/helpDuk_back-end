@@ -2,7 +2,10 @@ package com.helpduk.helpDuk.controller;
 
 import com.helpduk.helpDuk.base.Enum.MessageType;
 import com.helpduk.helpDuk.base.dto.chat.ChatMessageDto;
+import com.helpduk.helpDuk.config.security.JwtTokenProvider;
 import com.helpduk.helpDuk.entity.MessageEntity;
+import com.helpduk.helpDuk.entity.UserEntity;
+import com.helpduk.helpDuk.repository.UserRepository;
 import com.helpduk.helpDuk.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -19,12 +22,15 @@ public class MessageController {
 
     private final SimpMessageSendingOperations sendingOperations;
     private final MessageService messageService;
+    private final UserRepository userRepository;
 
     @MessageMapping("/chat/message")
     public void enter(MessageEntity message) {
         if (MessageType.ENTER.equals(message.getType())) {
-//            message.setContent(message.getSenderId().getNickName()+"님이 입장하였습니다.");
-            message.setContent("유저님이 입장하였습니다.");
+            Integer userId = JwtTokenProvider.getCurrentMemberId();
+
+            UserEntity user = userRepository.findById(userId).orElseThrow();
+            message.setContent(user.getNickName() + " 님이 입장하였습니다.");
         }
 
         messageService.saveMessage(message);
@@ -34,6 +40,8 @@ public class MessageController {
 
     @GetMapping("/chat/getAllMessages")
     public List<ChatMessageDto> getAllMessages(@RequestParam String roomId){
-        return messageService.getAllMessages(roomId);
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
+
+        return messageService.getAllMessages(userId, roomId);
     }
 }

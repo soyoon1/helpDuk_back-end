@@ -58,7 +58,9 @@ public class ChatRoomService {
     }
 
     //채팅방 하나 불러오기
-    public ChatRoomInfoDto findById(String roomId) {
+    public ChatRoomInfoDto findById(Integer userId, String roomId) {
+
+        userRepository.findById(userId).orElseThrow();
         ChatRoomEntity chatRoom = chatRoomRepository.findByRoomId(roomId).orElseThrow();
 
         ChatRoomInfoDto chatRoomInfoDto = new ChatRoomInfoDto(chatRoom);

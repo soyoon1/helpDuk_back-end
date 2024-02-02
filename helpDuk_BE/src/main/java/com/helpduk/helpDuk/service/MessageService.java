@@ -16,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageService {
 
-    private final ChatRoomRepository chatRoomRepository;
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
 
@@ -25,8 +24,8 @@ public class MessageService {
         messageRepository.save(message);
     }
 
-    public List<ChatMessageDto> getAllMessages(String roomId){
-
+    public List<ChatMessageDto> getAllMessages(Integer userId, String roomId){
+        userRepository.findById(userId).orElseThrow();
         return messageRepository.findByRoomId(roomId);
 
     }
