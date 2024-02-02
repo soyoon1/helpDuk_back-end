@@ -33,8 +33,8 @@ public class ChatRoomController {
     // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoomInfoDto createRoom(@RequestParam Integer userId, @RequestParam Integer helperId) {
-        return chatService.createRoom(userId, helperId);
+    public ChatRoomInfoDto createRoom(@RequestParam Integer userId, @RequestParam Integer helperId, @RequestParam Integer taskId) {
+        return chatService.createRoom(userId, helperId, taskId);
     }
 
     // 채팅방 입장 화면(테스트 시 사용)
