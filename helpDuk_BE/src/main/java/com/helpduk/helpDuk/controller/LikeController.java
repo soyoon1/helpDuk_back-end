@@ -1,6 +1,5 @@
 package com.helpduk.helpDuk.controller;
 
-import com.helpduk.helpDuk.base.dto.response.ResponseDTO;
 import com.helpduk.helpDuk.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

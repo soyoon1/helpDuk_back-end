@@ -29,6 +29,4 @@ public class ChatRoomListDto {
         this.profileImage = helper.getProfileImage();
         this.lastContent = content;
     }
-
-
 }

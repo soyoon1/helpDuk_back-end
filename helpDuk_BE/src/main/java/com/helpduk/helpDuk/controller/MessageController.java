@@ -3,7 +3,6 @@ package com.helpduk.helpDuk.controller;
 import com.helpduk.helpDuk.base.Enum.MessageType;
 import com.helpduk.helpDuk.base.dto.chat.ChatMessageDto;
 import com.helpduk.helpDuk.entity.MessageEntity;
-import com.helpduk.helpDuk.service.ChatRoomService;
 import com.helpduk.helpDuk.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -26,7 +25,6 @@ public class MessageController {
         if (MessageType.ENTER.equals(message.getType())) {
 //            message.setContent(message.getSenderId().getNickName()+"님이 입장하였습니다.");
             message.setContent("유저님이 입장하였습니다.");
-
         }
 
         messageService.saveMessage(message);

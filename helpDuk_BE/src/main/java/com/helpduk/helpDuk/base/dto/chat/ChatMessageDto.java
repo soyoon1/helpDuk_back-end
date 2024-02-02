@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ChatMessageDto {
     private Integer messageId;
-    private UserEntity senderId; // 채팅을 보낸 사람
-    private String content; // 메시지
+    private UserEntity senderId;
+    private String content;
     private LocalDateTime sendTime;
 
 

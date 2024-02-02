@@ -1,5 +1,6 @@
 package com.helpduk.helpDuk.service;
 
+import com.helpduk.helpDuk.base.dto.chat.ChatRoomInfoDto;
 import com.helpduk.helpDuk.base.dto.chat.ChatRoomListDto;
 import com.helpduk.helpDuk.entity.ChatRoomEntity;
 import com.helpduk.helpDuk.entity.UserEntity;
@@ -9,7 +10,6 @@ import com.helpduk.helpDuk.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.bridge.Message;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,7 +26,6 @@ public class ChatRoomService {
 
 
     @PostConstruct
-    //의존관게 주입완료되면 실행되는 코드
     private void init() {
         chatRooms = new LinkedHashMap<>();
 
@@ -56,22 +55,27 @@ public class ChatRoomService {
     }
 
     //채팅방 하나 불러오기
-    public ChatRoomEntity findById(String roomId) {
+    public ChatRoomInfoDto findById(String roomId) {
         ChatRoomEntity chatRoom = chatRoomRepository.findByRoomId(roomId).orElseThrow();
-        return chatRoom;
+
+        ChatRoomInfoDto chatRoomInfoDto = new ChatRoomInfoDto(chatRoom);
+        return chatRoomInfoDto;
     }
 
     //채팅방 생성
-    public ChatRoomEntity createRoom(Integer userId, Integer helperId) {
+    public ChatRoomInfoDto createRoom(Integer userId, Integer helperId, Integer taskId) {
 
         UserEntity user = userRepository.findByUserId(userId).orElseThrow();
         UserEntity helper = userRepository.findByUserId(helperId).orElseThrow();
+
+        ChatRoomInfoDto chatRoomInfoDto;
 
         // 이미 있는 채팅방인지 체크
         Optional<ChatRoomEntity> ch = chatRoomRepository.findByUserAndHelper(user, helper);
 
         if(ch.isPresent()){
-            return ch.get();
+            chatRoomInfoDto = new ChatRoomInfoDto(ch.get());
+            return chatRoomInfoDto;
         }
 
         ChatRoomEntity chatRoom = ChatRoomEntity.builder()
@@ -84,6 +88,7 @@ public class ChatRoomService {
 
         ChatRoomListDto list = new ChatRoomListDto(chatRoom, chatRoom.getHelper(), "");
         chatRooms.put(chatRoom.getRoomId(), list);
-        return chatRoom;
+        chatRoomInfoDto = new ChatRoomInfoDto(chatRoom);
+        return chatRoomInfoDto;
     }
 }

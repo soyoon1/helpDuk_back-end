@@ -21,7 +21,6 @@ public class ChatRoomEntity {
     @Id
     private String roomId;
 
-
     @JsonCreator
     public ChatRoomEntity(@JsonProperty("roomId") String roomId) {
         this.roomId = roomId;
