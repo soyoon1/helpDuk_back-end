@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity
@@ -20,16 +24,25 @@ public class ReviewEntity {
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private UserEntity userId;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "acceptUserId")
-    private UserEntity acceptUserId;
+    private UserEntity acceptUser;
 
     @OneToOne
     @JoinColumn(name = "taskId")
-    private TaskEntity taskId;
+    private TaskEntity task;
 
     @Column(nullable = false, length = 200)
     private String content;
+
+    @Column(nullable = false)
+    private String nickname;
+
+    @Column(nullable = false)
+    private String profileImage;
+
+    @CreatedDate
+    private LocalDateTime uploadDate;
 }
