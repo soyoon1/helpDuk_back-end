@@ -1,10 +1,15 @@
 package com.helpduk.helpDuk.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -14,19 +19,31 @@ import lombok.NoArgsConstructor;
 @Table(name="chatroom")
 public class ChatRoomEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roomId;
+    private String roomId;
+
+    @JsonCreator
+    public ChatRoomEntity(@JsonProperty("roomId") String roomId) {
+        this.roomId = roomId;
+    }
+
+    public static ChatRoomEntity create(String name) {
+        ChatRoomEntity room = new ChatRoomEntity(UUID.randomUUID().toString());
+        return room;
+    }
+
+    @OneToMany(mappedBy = "chatRoomEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MessageEntity> messages;
 
     @ManyToOne
-    @JoinColumn(name = "taskId")
-    private TaskEntity taskId;
+    @JoinColumn(name = "task")
+    private TaskEntity task;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
-    private UserEntity userId;
+    @JoinColumn(name = "user")
+    private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "helpUserId")
-    private UserEntity helperUserId;
+    @JoinColumn(name = "helper")
+    private UserEntity helper;
 
 }

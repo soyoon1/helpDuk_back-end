@@ -1,5 +1,6 @@
 package com.helpduk.helpDuk.entity;
 
+import com.helpduk.helpDuk.base.Enum.MessageType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,15 +19,19 @@ import java.time.LocalDateTime;
 public class MessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "message_id")
     private Integer messageId;
 
     @ManyToOne
-    @JoinColumn(name = "senderId")
+    @JoinColumn(name = "senderId", referencedColumnName = "userId")
     private UserEntity senderId;
 
+    @Column(nullable = false)
+    private String roomId;
+
     @ManyToOne
-    @JoinColumn(name = "roomId")
-    private ChatRoomEntity roomId;
+    @JoinColumn(name = "roomId", referencedColumnName = "roomId", insertable = false, updatable = false)
+    private ChatRoomEntity chatRoomEntity;
 
     @Column(nullable = false)
     private String content;
@@ -34,4 +39,7 @@ public class MessageEntity {
     @CreatedDate
     private LocalDateTime sendTime;
 
+    private MessageType type;
+
 }
+
