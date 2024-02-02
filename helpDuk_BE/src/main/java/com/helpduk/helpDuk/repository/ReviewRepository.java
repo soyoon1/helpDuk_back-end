@@ -17,7 +17,9 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
 
     List<ReviewEntity> findAllByOrderByUploadDateDesc();
 
-    List<ReviewEntity> findByUser(UserEntity user);
+//    List<ReviewEntity> findByUser(UserEntity user);
+
+    List<ReviewEntity> findByUser(Optional<UserEntity> user);
 
     List<ReviewEntity> findByAcceptUser(UserEntity user);
 

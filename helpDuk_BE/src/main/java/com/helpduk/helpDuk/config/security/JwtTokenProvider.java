@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import io.swagger.models.auth.In;
 import jakarta.annotation.PostConstruct;
@@ -90,9 +91,14 @@ public class JwtTokenProvider {
     // JWT 토큰으로 인증 정보 조회
     public Authentication getAuthentication(String token) {
         LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 시작");
-        UserEntity userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
-        LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}",
-            userDetails.getUserEmail());
+
+//        UserEntity userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
+//        LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}",
+//            userDetails.getUserEmail());
+
+        Optional<UserEntity> userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
+//        LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}",
+//            userDetails.getUserEmail());
         return new UsernamePasswordAuthenticationToken(userDetails, "");
     }
 
@@ -132,12 +138,26 @@ public class JwtTokenProvider {
         }
     }
 
-    public static Integer authenticatedUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer username = ((UserEntity)principal).getUserId();
-        LOGGER.info("[authenticatedUser]username : {}",username);
-        return username;
-    }
+//    public static Integer authenticatedUser() {
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Integer username = ((UserEntity)principal).getUserId();
+//        LOGGER.info("[authenticatedUser]username : {}",username);
+//        return username;
+//    }
+
+    public static int getCurrentMemberId(){
+        final Authentication authentication = SecurityContextHolder.getContext() .getAuthentication();
+        if(authentication == null || authentication.getName() == null) {
+            throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
+        }
+
+        String input = authentication.getName();
+        String userId = input.replaceAll(".*userId=(\\d+).*", "$1");
+        System.out.println("UserId: " + userId);
+
+        LOGGER.info("[getCurrentMemberId]username : {}", userId);
+            return Integer.valueOf(userId);
+        }
 
 //    public Claims getClaims(String token) {
 //        try {

@@ -21,4 +21,5 @@ public interface LikeRepository extends JpaRepository<LikeEntity, Integer> {
 
     Optional<LikeEntity> deleteByLikeId(Integer likeId);
 
+
 }
