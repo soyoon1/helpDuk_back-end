@@ -8,7 +8,6 @@ import com.helpduk.helpDuk.entity.ReviewEntity;
 import com.helpduk.helpDuk.entity.TaskEntity;
 import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.ChatRoomRepository;
-import com.helpduk.helpDuk.repository.ReviewRepository;
 import com.helpduk.helpDuk.repository.TaskRepository;
 import com.helpduk.helpDuk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
