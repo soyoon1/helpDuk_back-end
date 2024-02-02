@@ -63,7 +63,7 @@ public class ChatRoomService {
     }
 
     //채팅방 생성
-    public ChatRoomInfoDto createRoom(Integer userId, Integer helperId, Integer taskId) {
+    public ChatRoomInfoDto createRoom(Integer userId, Integer helperId) {
 
         UserEntity user = userRepository.findByUserId(userId).orElseThrow();
         UserEntity helper = userRepository.findByUserId(helperId).orElseThrow();

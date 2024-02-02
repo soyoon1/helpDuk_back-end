@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.scheduling.config.Task;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -30,6 +31,9 @@ public class ChatRoomEntity {
         ChatRoomEntity room = new ChatRoomEntity(UUID.randomUUID().toString());
         return room;
     }
+
+    @OneToMany(mappedBy = "chatRoomEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MessageEntity> messages;
 
     @ManyToOne
     @JoinColumn(name = "task")
