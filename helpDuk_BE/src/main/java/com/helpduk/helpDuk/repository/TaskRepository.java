@@ -22,7 +22,9 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Integer> {
     List<TaskEntity> findByTaskStatus(TaskStatus taskStatus);
 
     List<TaskEntity> findByUser(UserEntity user);
+
     List<TaskEntity> findByAcceptUser(UserEntity user);
+
     List<TaskEntity> findByLocationCategory(LocationCategory locationCategory);
     List<TaskEntity> findByDetailCategory(DetailCategory detailCategory);
 

@@ -43,4 +43,3 @@ application.properties
 
 ## AWS S3 Bucket 엑세스 키가 있어 제외합니다. ##
 application-s3.properties
-

@@ -23,7 +23,7 @@ public class MessageEntity {
     private Integer messageId;
 
     @ManyToOne
-    @JoinColumn(name = "senderId")
+    @JoinColumn(name = "senderId", referencedColumnName = "userId")
     private UserEntity senderId;
 
     @Column(nullable = false)
@@ -42,3 +42,4 @@ public class MessageEntity {
     private MessageType type;
 
 }
+
