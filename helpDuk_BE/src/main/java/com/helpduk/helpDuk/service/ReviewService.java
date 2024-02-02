@@ -1,11 +1,9 @@
 package com.helpduk.helpDuk.service;
 
-import com.helpduk.helpDuk.base.Enum.DetailCategory;
 import com.helpduk.helpDuk.base.Enum.TaskStatus;
 import com.helpduk.helpDuk.base.dto.ReviewDetailDto;
 import com.helpduk.helpDuk.base.dto.ReviewDto;
 import com.helpduk.helpDuk.base.dto.ReviewRequestDto;
-import com.helpduk.helpDuk.entity.ChatRoomEntity;
 import com.helpduk.helpDuk.entity.ReviewEntity;
 import com.helpduk.helpDuk.entity.TaskEntity;
 import com.helpduk.helpDuk.entity.UserEntity;

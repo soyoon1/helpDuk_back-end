@@ -1,6 +1,5 @@
 package com.helpduk.helpDuk.repository;
 
-import com.helpduk.helpDuk.entity.ChatRoomEntity;
 import com.helpduk.helpDuk.entity.TaskEntity;
 import com.helpduk.helpDuk.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

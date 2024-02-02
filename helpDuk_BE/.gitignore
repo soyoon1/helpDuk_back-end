@@ -2,6 +2,8 @@ HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
+application.properties
+application-s3.properties
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -36,6 +38,8 @@ out/
 ### VS Code ###
 .vscode/
 
+### application ###
+application.properties
+
 ## AWS S3 Bucket 엑세스 키가 있어 제외합니다. ##
 application-s3.properties
-application.properties
