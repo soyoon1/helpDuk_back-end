@@ -41,7 +41,7 @@ public class ReviewService {
         }
 
         // 해당 의뢰글에 accept_user_id 추가해 줌. + 거래 현황을 거래 완료로 바꿔 줌.
-        TaskEntity task = room.getTaskId();
+        TaskEntity task = room.getTask();
         task.setAcceptUser(room.getHelper());
         task.setTaskStatus(TaskStatus.DONE);
         taskRepository.save(task);
@@ -54,7 +54,7 @@ public class ReviewService {
         ReviewEntity review = ReviewEntity.builder()
                 .content(reviewRequestDto.getContent())
                 .acceptUser(room.getHelper())
-                .task(room.getTaskId())
+                .task(room.getTask())
                 .user(room.getUser())
                 .build();
 

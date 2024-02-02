@@ -84,22 +84,22 @@ public class MypageController {
         return ResponseEntity.ok(mypageLikedUserDto);
     }
 
-    @GetMapping("/mypage/review")
-    public ResponseEntity<MyPageReviewDto> getMyReviewPage(){
-//        Integer userId = JwtTokenProvider.authenticatedUser();
-        Integer userId = JwtTokenProvider.getCurrentMemberId();
-
-        MyPageReviewDto myPageReviewDto = myPageService.getMyReviewPage(userId);
-
-//        LOGGER.info("[getMyReviewPage]");
-
-        if(myPageReviewDto == null){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .build();
-        }
-        return ResponseEntity.ok(myPageReviewDto);
-    }
+//    @GetMapping("/mypage/review")
+//    public ResponseEntity<MyPageReviewDto> getMyReviewPage(){
+////        Integer userId = JwtTokenProvider.authenticatedUser();
+//        Integer userId = JwtTokenProvider.getCurrentMemberId();
+//
+//        MyPageReviewDto myPageReviewDto = myPageService.getMyReviewPage(userId);
+//
+////        LOGGER.info("[getMyReviewPage]");
+//
+//        if(myPageReviewDto == null){
+//            return ResponseEntity
+//                    .status(HttpStatus.NOT_FOUND)
+//                    .build();
+//        }
+//        return ResponseEntity.ok(myPageReviewDto);
+//    }
 
     @GetMapping("/mypage/task")
     public ResponseEntity<MyPageTaskDto> getMyTaskPage(){
@@ -125,7 +125,7 @@ public class MypageController {
     public ResponseEntity<ReviewDetailDto> getReviewDetail() {
         //        Integer userId = JwtUtil.getCurrentMemberId();
         // 사용자가 3이라고 가정 사용자의 프로필을 가져와야 하기 때문에 필요하다. 로그인을 하지 않을 경우를 고려해야 한다. -> 추후 개발 예정
-        Integer userId = 3;
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
         ReviewDetailDto reviewDetailDto = reviewService.getReviewDetail(userId);
 
         return ResponseEntity.ok(reviewDetailDto);

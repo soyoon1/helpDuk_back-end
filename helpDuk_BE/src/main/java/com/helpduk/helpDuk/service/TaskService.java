@@ -98,7 +98,7 @@ public class TaskService {
                 .taskFeeMethod(enumToStringTaskFeeMethod(task.getTaskFeeMethod()))
                 .taskTime(task.getTaskTime())
                 .content(task.getContent())
-                .chattingCount(chatRoomRepository.countByTaskId(task))
+                .chattingCount(chatRoomRepository.countByTask(task))
                 .taskStatus(enumToStringTaskStatus(task.getTaskStatus()))
                 .isItMine(task.getUser().getUserId().equals(userId))
                 .build();
