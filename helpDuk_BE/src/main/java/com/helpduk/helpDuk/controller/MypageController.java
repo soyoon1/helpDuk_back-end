@@ -38,11 +38,8 @@ public class MypageController {
 
     @GetMapping("/mypage")
     public ResponseEntity<MyPageDto> getMyPage(HttpServletRequest request){
-//        Integer userId = JwtUtil.getCurrentMemberId(jwtTokenProvider.resolveToken(request));
-//        Integer userId = JwtTokenProvider.getCurrentMemberId();
-//        Integer userId = JwtTokenProvider.authenticatedUser(jwtTokenProvider.resolveToken(request));
+        Integer userId = JwtTokenProvider.authenticatedUser();
 
-        Integer userId = 11;
         MyPageDto myPageDto = myPageService.getMyPage(userId);
 
         if(myPageDto == null){
@@ -59,8 +56,7 @@ public class MypageController {
     public ResponseEntity<String> editProfile(@RequestParam("nickName") String nickname,
                                               @RequestParam("profileImage") String profileImage){
 
-//        Integer userId = JwtTokenProvider.getCurrentMemberId();
-        Integer userId = 11;
+        Integer userId = JwtTokenProvider.authenticatedUser();
 
         myPageService.updateProfile(userId, nickname, profileImage);
 
@@ -77,9 +73,7 @@ public class MypageController {
     @GetMapping("/mypage/like")
     public ResponseEntity<MyPageLikedUserDto> getMyLikePage(){
 
-//        Integer userId = JwtUtil.getCurrentMemberId(jwtTokenProvider.resolveToken(request));
-//        Integer userId = JwtTokenProvider.getCurrentMemberId();
-        Integer userId = 11;
+        Integer userId = JwtTokenProvider.authenticatedUser();
         MyPageLikedUserDto mypageLikedUserDto = myPageService.getMyLikePage(userId);
 
         return ResponseEntity.ok(mypageLikedUserDto);
@@ -87,9 +81,7 @@ public class MypageController {
 
     @GetMapping("/mypage/review")
     public ResponseEntity<MyPageReviewDto> getMyReviewPage(){
-//        Integer userId = JwtUtil.getCurrentMemberId(jwtTokenProvider.resolveToken(request));
-//        Integer userId = JwtTokenProvider.getCurrentMemberId();
-        Integer userId = 11;
+        Integer userId = JwtTokenProvider.authenticatedUser();
         MyPageReviewDto myPageReviewDto = myPageService.getMyReviewPage(userId);
 
 //        LOGGER.info("[getMyReviewPage]");
@@ -104,9 +96,7 @@ public class MypageController {
 
     @GetMapping("/mypage/task")
     public ResponseEntity<MyPageTaskDto> getMyTaskPage(){
-//        Integer userId = JwtUtil.getCurrentMemberId(jwtTokenProvider.resolveToken(request));
-//        Integer userId = JwtTokenProvider.getCurrentMemberId();
-        Integer userId = 11;
+        Integer userId = JwtTokenProvider.authenticatedUser();
         MyPageTaskDto myPageTaskDto = myPageService.getMyTaskPage(userId);
 
         return ResponseEntity.ok(myPageTaskDto);
@@ -114,9 +104,7 @@ public class MypageController {
 
     @GetMapping("/mypage/othertask")
     public ResponseEntity<MyPageTaskDto> getOtherTaskPage(){
-//        Integer userId = JwtUtil.getCurrentMemberId(jwtTokenProvider.resolveToken(request));
-//        Integer userId = JwtTokenProvider.getCurrentMemberId();
-        Integer userId = 11;
+        Integer userId = JwtTokenProvider.authenticatedUser();
         MyPageTaskDto myPageTaskDto = myPageService.getOtherTaskPage(userId);
 
         return ResponseEntity.ok(myPageTaskDto);

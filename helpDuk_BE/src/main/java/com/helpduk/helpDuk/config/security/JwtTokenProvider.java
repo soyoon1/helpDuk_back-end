@@ -17,6 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+
+import io.swagger.models.auth.In;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -130,25 +132,11 @@ public class JwtTokenProvider {
         }
     }
 
-    public static Integer getCurrentMemberId(){
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(authentication == null || authentication.getName() == null){
-            throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
-        }
-
-        String username = authentication.getName();
-        LOGGER.info("check : {}", authentication.getName());
-
-        return Integer.parseInt(username);
-    }
-
-    public static Integer authenticatedUser(String token) {
-        LOGGER.info("[authenticatedUser] 토큰 기반 회원 구별 정보 추출");
-        String info = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
-                .getSubject();
-        LOGGER.info("[authenticatedUser] 토큰 기반 회원 구별 정보 추출 완료, info : {}", info);
-        return Integer.valueOf(info);
+    public static Integer authenticatedUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer username = ((UserEntity)principal).getUserId();
+        LOGGER.info("[authenticatedUser]username : {}",username);
+        return username;
     }
 
 //    public Claims getClaims(String token) {
