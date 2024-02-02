@@ -12,5 +12,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, String
     Optional<ChatRoomEntity> findByRoomId(String id);
     List<ChatRoomEntity> findByUser(UserEntity user);
     Optional<ChatRoomEntity> findByUserAndHelper(UserEntity user, UserEntity helper);
+
     Integer countByTaskId(TaskEntity task);
 }
