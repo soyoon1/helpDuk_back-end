@@ -50,4 +50,11 @@ public class UserEntity {
     public String getUserEmail() {
         return userEmail;
     }
+
+    public String getProfileImage(){
+        return profileImage;
+    }
+    public Float getTemperature(){
+        return temperature;
+    }
 }
