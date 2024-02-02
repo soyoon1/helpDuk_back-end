@@ -14,5 +14,7 @@ import java.util.Optional;
 public interface LikeRepository extends JpaRepository<LikeEntity, Integer> {
     List<LikeEntity> findAllByOrderByUploadDateDesc();
 
-    List<LikeEntity> findByUserId(UserEntity user);
+//    List<LikeEntity> findByUserId(UserEntity user);
+
+    List<LikeEntity> findByUserId(Optional<UserEntity> user);
 }
