@@ -8,31 +8,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-
 import com.helpduk.helpDuk.base.Enum.dto.*;
-import com.helpduk.helpDuk.common.CommonResponse;
 import com.helpduk.helpDuk.config.security.JwtTokenProvider;
-import com.helpduk.helpDuk.config.security.JwtUtil;
-import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.UserRepository;
 import com.helpduk.helpDuk.service.MyPageService;
-import io.jsonwebtoken.Jwt;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.ErrorResponse;
+
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
