@@ -17,16 +17,12 @@ public class ChatRoomListDto {
 
     private String roomId;
     private Integer taskId;
-    private Integer helperId;
-    private String nickName;
-    private String profileImage;
+    private HelperDto helper;
     private String lastContent;
 
     public ChatRoomListDto(ChatRoomEntity chatRoom, UserEntity helper, String content) {
         this.roomId = chatRoom.getRoomId();
-        this.helperId = helper.getUserId();
-        this.nickName = helper.getNickName();;
-        this.profileImage = helper.getProfileImage();
+        this.helper = new HelperDto(helper);
         this.lastContent = content;
     }
 }
