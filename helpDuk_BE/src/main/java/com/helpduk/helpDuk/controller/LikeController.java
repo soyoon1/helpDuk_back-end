@@ -1,5 +1,6 @@
 package com.helpduk.helpDuk.controller;
 
+import com.helpduk.helpDuk.config.security.JwtTokenProvider;
 import com.helpduk.helpDuk.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,8 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createLike(@RequestParam Integer userId, @RequestParam Integer likeUserId){
+    public ResponseEntity<String> createLike(@RequestParam Integer likeUserId){
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
 
         likeService.createLike(userId, likeUserId);
 
@@ -23,7 +25,9 @@ public class LikeController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteLike(@RequestParam Integer userId, @RequestParam Integer likeUserId){
+    public ResponseEntity<String> deleteLike(@RequestParam Integer likeUserId){
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
+
         likeService.deleteLike(userId, likeUserId);
 
        return ResponseEntity.ok("좋아요 취소 완료");

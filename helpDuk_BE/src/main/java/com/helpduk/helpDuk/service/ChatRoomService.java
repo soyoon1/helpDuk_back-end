@@ -3,9 +3,11 @@ package com.helpduk.helpDuk.service;
 import com.helpduk.helpDuk.base.dto.chat.ChatRoomInfoDto;
 import com.helpduk.helpDuk.base.dto.chat.ChatRoomListDto;
 import com.helpduk.helpDuk.entity.ChatRoomEntity;
+import com.helpduk.helpDuk.entity.TaskEntity;
 import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.ChatRoomRepository;
 import com.helpduk.helpDuk.repository.MessageRepository;
+import com.helpduk.helpDuk.repository.TaskRepository;
 import com.helpduk.helpDuk.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
+    private final TaskRepository taskRepository;
     private Map<String, ChatRoomListDto> chatRooms;
 
 
@@ -55,7 +58,9 @@ public class ChatRoomService {
     }
 
     //채팅방 하나 불러오기
-    public ChatRoomInfoDto findById(String roomId) {
+    public ChatRoomInfoDto findById(Integer userId, String roomId) {
+
+        userRepository.findById(userId).orElseThrow();
         ChatRoomEntity chatRoom = chatRoomRepository.findByRoomId(roomId).orElseThrow();
 
         ChatRoomInfoDto chatRoomInfoDto = new ChatRoomInfoDto(chatRoom);
@@ -63,10 +68,11 @@ public class ChatRoomService {
     }
 
     //채팅방 생성
-    public ChatRoomInfoDto createRoom(Integer userId, Integer helperId) {
+    public ChatRoomInfoDto createRoom(Integer userId, Integer helperId, Integer taskId) {
 
         UserEntity user = userRepository.findByUserId(userId).orElseThrow();
         UserEntity helper = userRepository.findByUserId(helperId).orElseThrow();
+        TaskEntity task = taskRepository.findByTaskId(taskId).orElseThrow();
 
         ChatRoomInfoDto chatRoomInfoDto;
 
@@ -82,6 +88,7 @@ public class ChatRoomService {
                 .roomId(UUID.randomUUID().toString())
                 .user(user)
                 .helper(helper)
+                .task(task)
                 .build();
 
         chatRoomRepository.save(chatRoom);
