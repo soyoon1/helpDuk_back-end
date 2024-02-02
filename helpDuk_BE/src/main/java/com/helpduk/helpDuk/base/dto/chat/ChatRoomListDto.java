@@ -22,6 +22,7 @@ public class ChatRoomListDto {
 
     public ChatRoomListDto(ChatRoomEntity chatRoom, UserEntity helper, String content) {
         this.roomId = chatRoom.getRoomId();
+        this.taskId = chatRoom.getTask().getTaskId();
         this.helper = new HelperDto(helper);
         this.lastContent = content;
     }
