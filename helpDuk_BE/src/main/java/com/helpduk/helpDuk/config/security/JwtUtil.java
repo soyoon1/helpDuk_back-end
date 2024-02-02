@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 public class JwtUtil {
 
     @Value("${jwt.secret}")
-    private static final String secretKey = "secretKey";
+    private static final String secretKey = "2ca7046acad2051f215c20ef27f1f904a98e43c6b451fe8051cc00ac9f83f5c6";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtUtil.class);
 

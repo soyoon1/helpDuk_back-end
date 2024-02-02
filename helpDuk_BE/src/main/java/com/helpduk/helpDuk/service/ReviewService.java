@@ -56,6 +56,8 @@ public class ReviewService {
                 .acceptUser(room.getHelper())
                 .task(room.getTask())
                 .user(room.getUser())
+                .nickname(room.getUser().getNickName())
+                .profileImage(room.getUser().getProfileImage())
                 .build();
 
         reviewRepository.save(review);
