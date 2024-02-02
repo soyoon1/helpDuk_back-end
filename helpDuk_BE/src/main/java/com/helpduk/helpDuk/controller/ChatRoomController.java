@@ -25,7 +25,7 @@ public class ChatRoomController {
     }
 
     // 모든 채팅방 목록 반환
-    @GetMapping("/rooms/{userId}")
+    @GetMapping("/rooms")
     @ResponseBody
     public List<ChatRoomListDto> room() {
         Integer userId = JwtTokenProvider.getCurrentMemberId();
