@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -20,8 +21,6 @@ public class ChatRoomEntity {
     @Id
     private String roomId;
 
-    private String roomName;
-
     @JsonCreator
     public ChatRoomEntity(@JsonProperty("roomId") String roomId) {
         this.roomId = roomId;
@@ -29,14 +28,15 @@ public class ChatRoomEntity {
 
     public static ChatRoomEntity create(String name) {
         ChatRoomEntity room = new ChatRoomEntity(UUID.randomUUID().toString());
-        room.roomName = name;
         return room;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "taskId")
-    private TaskEntity taskId;
+    @OneToMany(mappedBy = "chatRoomEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MessageEntity> messages;
 
+    @ManyToOne
+    @JoinColumn(name = "task")
+    private TaskEntity task;
 
     @ManyToOne
     @JoinColumn(name = "user")
