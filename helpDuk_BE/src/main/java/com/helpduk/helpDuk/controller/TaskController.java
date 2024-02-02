@@ -80,6 +80,7 @@ public class TaskController {
     @PutMapping("/task/{taskId}") // 심부를 거래 현황 변경
     public ResponseEntity<String> updateTaskStatus(@PathVariable Integer taskId, @RequestBody String taskStatus) throws AccessDeniedException {
 
+
         Integer visitUserId = JwtTokenProvider.getCurrentMemberId();
 
         taskService.updateTaskStatus(taskId, visitUserId, taskStatus);
@@ -89,6 +90,7 @@ public class TaskController {
     @GetMapping("/home") // 홈페이지
     public ResponseEntity<HomeDto> getHomePage(){
 
+
         Integer userId = JwtTokenProvider.getCurrentMemberId();
         HomeDto homeDto = taskService.getHomePage(userId);
 
@@ -97,6 +99,7 @@ public class TaskController {
 
     @GetMapping("/tasks/search") // 키워드 검색
     public ResponseEntity<TaskSearchDto> getSearchTask(@RequestParam(value = "keyword") String keyword){
+
 
         Integer userId = JwtTokenProvider.getCurrentMemberId();
         TaskSearchDto taskSearchDto = taskService.getKeywordSearch(userId, keyword);

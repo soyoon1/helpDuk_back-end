@@ -162,7 +162,7 @@ public class SignServiceImpl implements SignService {
             user = UserEntity.builder()
                     .nickName(nickName)
                     .password(passwordEncoder.encode(password))
-                    .profileImage(null)
+                    .profileImage("https://helpdukbucket.s3.ap-northeast-2.amazonaws.com/%EB%94%94%EC%8A%A4%EC%BD%94%EB%93%9C+%EB%B0%B0%EA%B2%BD%ED%99%94%EB%A9%B4.PNG")
                     .temperature(36.5F)
                     .userEmail(userEmail)
                     .build();
