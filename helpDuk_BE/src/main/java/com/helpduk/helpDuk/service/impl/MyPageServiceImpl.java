@@ -66,19 +66,28 @@ public class MyPageServiceImpl implements MyPageService {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
 
-        return MyPageDto.builder()
+        MyPageDto myPageDto = MyPageDto.builder()
                 .userEmail(user.getUserEmail())
                 .profileImage(user.getProfileImage())
                 .nickName(user.getNickName())
                 .temperature(String.valueOf(user.getTemperature()))
                 .build();
 
+//        LOGGER.info("[getMyPage] userEntity 값이 들어왔는지 확인 후 결과값 주입");
+//        if (!myPageDto.getUserEmail().isEmpty()) {
+//            LOGGER.info("[getMyPage] 정상 처리 완료");
+//            setSuccessResult(myPageDto);
+//        } else {
+//            LOGGER.info("[getMyPage] 실패 처리 완료");
+//            setFailResult(myPageDto);
+//        }
+        return myPageDto;
     }
 
     @Override
     public MyPageLikedUserDto getMyLikePage(Integer userId) {
 
-        List<MyPageLikedUserDto> likedUserList = getMyPageLikedUserList(userId);
+        List<LikeDto> likedUserList = getMyPageLikedUserList(userId);
 
         return MyPageLikedUserDto.builder()
                 .likedUserList(likedUserList)
@@ -88,7 +97,7 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public MyPageReviewDto getMyReviewPage(Integer userId) {
 
-        List<MyPageReviewDto> reviewList = getMyPageReviewList(userId);
+        List<ReviewDto> reviewList = getMyPageReviewList(userId);
 
         return MyPageReviewDto.builder()
                 .feedbackList(reviewList)
@@ -98,7 +107,7 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public MyPageTaskDto getMyTaskPage(Integer userId) {
 
-        List<MyPageTaskDto> taskList = getMyPageTastkList(userId);
+        List<TaskDto> taskList = getMyPageTastkList(userId);
 
         return MyPageTaskDto.builder()
                 .taskList(taskList)
@@ -108,7 +117,7 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public MyPageTaskDto getOtherTaskPage(Integer userId) {
 
-        List<MyPageTaskDto> taskList = getMyPageOtherTastkList(userId);
+        List<TaskDto> taskList = getMyPageOtherTastkList(userId);
 
         return MyPageTaskDto.builder()
                 .taskList(taskList)
@@ -117,32 +126,32 @@ public class MyPageServiceImpl implements MyPageService {
 
     // 마이페이지 화면에서 의뢰 목록 가져오기
     @Transactional
-    public List<MyPageTaskDto> getMyPageTastkList(Integer userId){
+    public List<TaskDto> getMyPageTastkList(Integer userId){
         return makeMyPageTaskDtoList(taskRepository.findByUser(userRepository.findByUserId(userId)));
     }
 
     @Transactional
-    public List<MyPageTaskDto> getMyPageOtherTastkList(Integer userId){
+    public List<TaskDto> getMyPageOtherTastkList(Integer userId){
         return makeMyPageTaskDtoList(taskRepository.findByAcceptUser(userRepository.findByUserId(userId)));
     }
 
     // 마이페이지 화면에서 후기 목록 가져오기
     @Transactional
-    public List<MyPageReviewDto> getMyPageReviewList(Integer userId){
+    public List<ReviewDto> getMyPageReviewList(Integer userId){
         return makeMyPageReviewDtoList(reviewRepository.findByUser(userRepository.findByUserId(userId)));
     }
 
     // 마이페이지 화면에서 즐겨찾기 목록 가져오기
     @Transactional
-    public List<MyPageLikedUserDto> getMyPageLikedUserList(Integer userId){
+    public List<LikeDto> getMyPageLikedUserList(Integer userId){
         return makeMyPageLikedUserDtoList(likeRepository.findByUserId(userRepository.findByUserId(userId)));
     }
 
-    // List<TaskEntity>를 List<HomeTaskDto>로 변환시켜주는 함수
+    // List<TaskEntity>를 List<MyPageTaskDto>로 변환시켜주는 함수
     @Transactional
-    public List<MyPageTaskDto> makeMyPageTaskDtoList(List<TaskEntity> taskEntityList){
+    public List<TaskDto> makeMyPageTaskDtoList(List<TaskEntity> taskEntityList){
 
-        List<MyPageTaskDto> taskList = new ArrayList<>();
+        List<TaskDto> taskList = new ArrayList<>();
 
         for(TaskEntity task: taskEntityList){
 
@@ -162,7 +171,7 @@ public class MyPageServiceImpl implements MyPageService {
                 firstImage =task.getImage().get(0);
             }
 
-            MyPageTaskDto myPageTaskDto = MyPageTaskDto.builder()
+            TaskDto myPageTaskDto = TaskDto.builder()
                     .taskId(task.getTaskId())
                     .title(task.getTitle())
                     .imageUrl(firstImage)
@@ -181,13 +190,13 @@ public class MyPageServiceImpl implements MyPageService {
 
     // List<ReviewEntity>를 List<MypageReviewDto>로 변환시켜주는 함수
     @Transactional
-    public List<MyPageReviewDto> makeMyPageReviewDtoList(List<ReviewEntity> reviewEntityList){
-        List<MyPageReviewDto> reviewList = new ArrayList<>();
+    public List<ReviewDto> makeMyPageReviewDtoList(List<ReviewEntity> reviewEntityList){
+        List<ReviewDto> reviewList = new ArrayList<>();
 
         // DB에 있는 모든 Review를 최신순으로 가져와 원하는 정보만을 추출
         for(ReviewEntity review: reviewEntityList){
 
-            MyPageReviewDto mypageReviewDto = MyPageReviewDto.builder()
+            ReviewDto mypageReviewDto = ReviewDto.builder()
                     .reviewId(review.getReviewId())
                     .user(review.getUser())
                     .acceptUser(review.getAcceptUser())
@@ -205,14 +214,14 @@ public class MyPageServiceImpl implements MyPageService {
 
     // List<UserEntity>를 List<MypageLikedUserDto>로 변환시켜주는 함수
     @Transactional
-    public List<MyPageLikedUserDto> makeMyPageLikedUserDtoList(List<LikeEntity> userEntityList){
+    public List<LikeDto> makeMyPageLikedUserDtoList(List<LikeEntity> userEntityList){
 
-        List<MyPageLikedUserDto> likeList = new ArrayList<>();
+        List<LikeDto> likeList = new ArrayList<>();
 
         // DB에 있는 모든 LikedUser를 최신순으로 가져와 원하는 정보만을 추출
         for(LikeEntity user: userEntityList){
 
-            MyPageLikedUserDto mypageLikedUserDto = MyPageLikedUserDto.builder()
+            LikeDto mypageLikedUserDto = LikeDto.builder()
                     .likeId(user.getLikeId())
                     .userId(user.getUserId())
                     .likeUserId(user.getLikeUserId())
@@ -264,18 +273,18 @@ public class MyPageServiceImpl implements MyPageService {
         };
     }
 
-    // 결과 모델에 api 요청 성공 데이터를 세팅해주는 메소드
-    private void setSuccessResult(MyPageDto result) {
-        result.setSuccess(true);
-        result.setCode(CommonResponse.SUCCESS.getCode());
-        result.setMsg(CommonResponse.SUCCESS.getMsg());
-    }
-
-    // 결과 모델에 api 요청 실패 데이터를 세팅해주는 메소드
-    private void setFailResult(MyPageDto result) {
-        result.setSuccess(false);
-        result.setCode(CommonResponse.FAIL.getCode());
-        result.setMsg(CommonResponse.FAIL.getMsg());
-    }
+//    // 결과 모델에 api 요청 성공 데이터를 세팅해주는 메소드
+//    private void setSuccessResult(MyPageDto result) {
+//        result.setSuccess(true);
+//        result.setCode(CommonResponse.SUCCESS.getCode());
+//        result.setMsg(CommonResponse.SUCCESS.getMsg());
+//    }
+//
+//    // 결과 모델에 api 요청 실패 데이터를 세팅해주는 메소드
+//    private void setFailResult(MyPageDto result) {
+//        result.setSuccess(false);
+//        result.setCode(CommonResponse.FAIL.getCode());
+//        result.setMsg(CommonResponse.FAIL.getMsg());
+//    }
 
 }

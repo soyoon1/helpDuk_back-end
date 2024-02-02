@@ -70,6 +70,15 @@ public class SignController {
         return signUpResultDto;
     }
 
+//    @PostMapping(value = "/logout")
+//    public SignInResultDto logout(){
+//        SignInResultDto signUpResultDto = new SignInResultDto();
+//        signService.logout(signUpResultDto);
+//
+//        LOGGER.info("[Logout] 로그아웃 되었습니다.");
+//        return signUpResultDto;
+//    }
+
     @GetMapping(value = "/exception")
     public void exceptionTest() throws RuntimeException {
         throw new RuntimeException("접근이 금지되었습니다.");

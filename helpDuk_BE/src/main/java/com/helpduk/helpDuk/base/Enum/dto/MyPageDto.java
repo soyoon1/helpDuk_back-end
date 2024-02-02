@@ -17,9 +17,8 @@ public class MyPageDto {
     private String temperature;
     private String profileImage;
 
-    private boolean success;
-
-    private int code;
-
-    private String msg;
+//    private List<MyPageTaskDto> taskList;
+//    private List<MyPageTaskDto> otherTaskList;
+//    private List<MyPageReviewDto> reviewList;
+//    private List<MyPageLikedUserDto> likedUserList;
 }

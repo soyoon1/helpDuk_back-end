@@ -20,6 +20,7 @@ import java.util.List;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.juli.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,11 +46,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(JwtTokenProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenProvider.class);
     private final UserDetailsServiceImpl userDetailsService; // Spring Security 에서 제공하는 서비스 레이어
 
     @Value("${jwt.secret}")
-    private String secretKey = "secretKey";
+    private static String secretKey = "secretKey";
     private final long tokenValidMillisecond = 1000L * 60 * 60; // 1시간 토큰 유효
 
     /**
@@ -129,7 +130,7 @@ public class JwtTokenProvider {
         }
     }
 
-    public static int getCurrentMemberId(){
+    public static Integer getCurrentMemberId(){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(authentication == null || authentication.getName() == null){
@@ -137,11 +138,31 @@ public class JwtTokenProvider {
         }
 
         String username = authentication.getName();
-
-        if (!username.matches("\\d+")) {
-            throw new RuntimeException("올바르지 않은 사용자 ID 형식입니다.");
-        }
+        LOGGER.info("check : {}", authentication.getName());
 
         return Integer.parseInt(username);
     }
+
+    public static Integer authenticatedUser(String token) {
+        LOGGER.info("[authenticatedUser] 토큰 기반 회원 구별 정보 추출");
+        String info = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
+                .getSubject();
+        LOGGER.info("[authenticatedUser] 토큰 기반 회원 구별 정보 추출 완료, info : {}", info);
+        return Integer.valueOf(info);
+    }
+
+//    public Claims getClaims(String token) {
+//        try {
+//            return Jwts.parser()
+//                    .setSigningKey(secretKey)
+//                    .parseClaimsJws(token)
+//                    .getBody();
+//        } catch (ExpiredJwtException e) { // Access Token
+//            return e.getClaims();
+//        }
+//    }
+//
+//    public Long getExpiration(String token) {
+//        return getClaims(token).getExpiration().getTime();
+//    }
 }

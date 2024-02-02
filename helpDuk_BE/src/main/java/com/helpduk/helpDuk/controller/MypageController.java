@@ -6,6 +6,7 @@ import com.helpduk.helpDuk.config.security.JwtTokenProvider;
 import com.helpduk.helpDuk.config.security.JwtUtil;
 import com.helpduk.helpDuk.repository.UserRepository;
 import com.helpduk.helpDuk.service.MyPageService;
+import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -14,11 +15,13 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -28,16 +31,27 @@ import org.springframework.web.bind.annotation.*;
 public class MypageController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(MypageController.class);
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final MyPageService myPageService;
     private AuthenticationManager authenticationManager;
 
     @GetMapping("/mypage")
-    public ResponseEntity<MyPageDto> getMyPage(){
+    public ResponseEntity<MyPageDto> getMyPage(HttpServletRequest request){
 //        Integer userId = JwtUtil.getCurrentMemberId(jwtTokenProvider.resolveToken(request));
-        Integer userId = JwtTokenProvider.getCurrentMemberId();
+//        Integer userId = JwtTokenProvider.getCurrentMemberId();
+//        Integer userId = JwtTokenProvider.authenticatedUser(jwtTokenProvider.resolveToken(request));
 
+        Integer userId = 11;
         MyPageDto myPageDto = myPageService.getMyPage(userId);
+
+        if(myPageDto == null){
+            LOGGER.info("[getMyPage] 마이페이지 접속 실패");
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+        }
+        LOGGER.info("[getMyPage] 마이페이지 접속 성공");
         return ResponseEntity.ok(myPageDto);
     }
 
@@ -45,15 +59,16 @@ public class MypageController {
     public ResponseEntity<String> editProfile(@RequestParam("nickName") String nickname,
                                               @RequestParam("profileImage") String profileImage){
 
-        Integer userId = JwtTokenProvider.getCurrentMemberId();
+//        Integer userId = JwtTokenProvider.getCurrentMemberId();
+        Integer userId = 11;
 
         myPageService.updateProfile(userId, nickname, profileImage);
 
         //세션 등록
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                userRepository.findByUserId(userId).getUserEmail(),
-                userRepository.findByUserId(userId).getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//                userRepository.findByUserId(userId).getUserEmail(),
+//                userRepository.findByUserId(userId).getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return ResponseEntity.ok("프로필 수정 완료");
 
@@ -63,8 +78,8 @@ public class MypageController {
     public ResponseEntity<MyPageLikedUserDto> getMyLikePage(){
 
 //        Integer userId = JwtUtil.getCurrentMemberId(jwtTokenProvider.resolveToken(request));
-        Integer userId = JwtTokenProvider.getCurrentMemberId();
-
+//        Integer userId = JwtTokenProvider.getCurrentMemberId();
+        Integer userId = 11;
         MyPageLikedUserDto mypageLikedUserDto = myPageService.getMyLikePage(userId);
 
         return ResponseEntity.ok(mypageLikedUserDto);
@@ -73,18 +88,25 @@ public class MypageController {
     @GetMapping("/mypage/review")
     public ResponseEntity<MyPageReviewDto> getMyReviewPage(){
 //        Integer userId = JwtUtil.getCurrentMemberId(jwtTokenProvider.resolveToken(request));
-        Integer userId = JwtTokenProvider.getCurrentMemberId();
-
+//        Integer userId = JwtTokenProvider.getCurrentMemberId();
+        Integer userId = 11;
         MyPageReviewDto myPageReviewDto = myPageService.getMyReviewPage(userId);
 
+//        LOGGER.info("[getMyReviewPage]");
+
+        if(myPageReviewDto == null){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+        }
         return ResponseEntity.ok(myPageReviewDto);
     }
 
     @GetMapping("/mypage/task")
     public ResponseEntity<MyPageTaskDto> getMyTaskPage(){
 //        Integer userId = JwtUtil.getCurrentMemberId(jwtTokenProvider.resolveToken(request));
-        Integer userId = JwtTokenProvider.getCurrentMemberId();
-
+//        Integer userId = JwtTokenProvider.getCurrentMemberId();
+        Integer userId = 11;
         MyPageTaskDto myPageTaskDto = myPageService.getMyTaskPage(userId);
 
         return ResponseEntity.ok(myPageTaskDto);
@@ -93,8 +115,8 @@ public class MypageController {
     @GetMapping("/mypage/othertask")
     public ResponseEntity<MyPageTaskDto> getOtherTaskPage(){
 //        Integer userId = JwtUtil.getCurrentMemberId(jwtTokenProvider.resolveToken(request));
-        Integer userId = JwtTokenProvider.getCurrentMemberId();
-
+//        Integer userId = JwtTokenProvider.getCurrentMemberId();
+        Integer userId = 11;
         MyPageTaskDto myPageTaskDto = myPageService.getOtherTaskPage(userId);
 
         return ResponseEntity.ok(myPageTaskDto);

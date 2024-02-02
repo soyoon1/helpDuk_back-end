@@ -13,4 +13,6 @@ public interface SignService {
     SignUpResultDto signUp(String userEmail, String password, String nickName, Float temperature) throws Exception;
 
     SignInResultDto signIn(String userEmail, String password) throws RuntimeException;
+
+//    public void logout(SignInResultDto tokenRequestDto);
 }

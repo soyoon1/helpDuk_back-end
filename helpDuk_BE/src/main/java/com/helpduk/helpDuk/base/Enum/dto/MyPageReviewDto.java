@@ -13,13 +13,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class MyPageReviewDto {
-    private String nickName;
-    private String profileImage;
-    private String content;
-    private Integer reviewId;
-    private UserEntity user;
-    private TaskEntity task;
-    private UserEntity acceptUser;
 
-    private List<MyPageReviewDto> feedbackList;
+    private List<ReviewDto> feedbackList;
 }
