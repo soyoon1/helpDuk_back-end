@@ -1,6 +1,7 @@
 package com.helpduk.helpDuk.controller;
 
 import com.helpduk.helpDuk.base.dto.*;
+import com.helpduk.helpDuk.config.security.JwtTokenProvider;
 import com.helpduk.helpDuk.entity.TaskEntity;
 import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.UserRepository;
@@ -40,12 +41,14 @@ public class TaskController {
     }
 
     @PostMapping("/task") // 게시글 작성
-    public ResponseEntity<String> createTaskMultipleImages(@RequestParam Integer userId,
+    public ResponseEntity<String> createTaskMultipleImages(
                                                            @RequestParam("title") String title, @RequestParam("content") String content,
                                                            @RequestParam("locationCategory") String locaCategory, @RequestParam("detailCategory") String detaCategory,
                                                            @RequestParam("files") List<MultipartFile> files, @RequestParam("taskTime") String taskTime,
                                                            @RequestParam("requestFee") Integer reqFee, @RequestParam("requestFeeMethod") String reqFeeMeth,
                                                            @RequestParam("taskFee") Integer taskFee, @RequestParam("taskFeeMethod") String taskFeeMeth){
+
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
         try {
             // 파일 String으로 변환
             List<String> fileUrls = new ArrayList<>();
@@ -66,9 +69,8 @@ public class TaskController {
 
     @GetMapping("/task/{taskId}") // 게시글 상세 보기
     public ResponseEntity<TaskDetailDto> getTaskDetail(@PathVariable Integer taskId){
-        //  Integer userId = JwtUtil.getCurrentMemberId();
-        // 일단 userId 1을 넣어줍니다. 방문자 아이디.
-        Integer userId = 1;
+
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
 
         TaskDetailDto taskDetailDto = taskService.createTaskDetailDto(taskId, userId);
 
@@ -78,9 +80,7 @@ public class TaskController {
     @PutMapping("/task/{taskId}") // 심부를 거래 현황 변경
     public ResponseEntity<String> updateTaskStatus(@PathVariable Integer taskId, @RequestBody String taskStatus) throws AccessDeniedException {
 
-        // 일단 방문자가 1이라고 가정
-        // Integer visitUserId = JwtUtil.getCurrentMemberId();
-        Integer visitUserId = 1;
+        Integer visitUserId = JwtTokenProvider.getCurrentMemberId();
 
         taskService.updateTaskStatus(taskId, visitUserId, taskStatus);
         return ResponseEntity.ok("거래 현황 변경 완료");
@@ -89,9 +89,7 @@ public class TaskController {
     @GetMapping("/home") // 홈페이지
     public ResponseEntity<HomeDto> getHomePage(){
 
-//        Integer userId = JwtUtil.getCurrentMemberId();
-        // 사용자가 1이라고 가정 사용자의 프로필을 가져와야 하기 때문에 필요하다. 로그인을 하지 않을 경우를 고려해야 한다. -> 추후 개발 예정
-        Integer userId = 1;
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
         HomeDto homeDto = taskService.getHomePage(userId);
 
         return ResponseEntity.ok(homeDto);
@@ -100,9 +98,7 @@ public class TaskController {
     @GetMapping("/tasks/search") // 키워드 검색
     public ResponseEntity<TaskSearchDto> getSearchTask(@RequestParam(value = "keyword") String keyword){
 
-        //        Integer userId = JwtUtil.getCurrentMemberId();
-        // 사용자가 1이라고 가정 사용자의 프로필을 가져와야 하기 때문에 필요하다. 로그인을 하지 않을 경우를 고려해야 한다. -> 추후 개발 예정
-        Integer userId = 1;
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
         TaskSearchDto taskSearchDto = taskService.getKeywordSearch(userId, keyword);
 
         return ResponseEntity.ok(taskSearchDto);
@@ -116,9 +112,8 @@ public class TaskController {
                                                                        @RequestParam(value = "clean") boolean clean, @RequestParam(value = "eventAssistant") boolean eventAssistant,
                                                                        @RequestParam(value = "bug") boolean bug){
 
-        //        Integer userId = JwtUtil.getCurrentMemberId();
-        // 사용자가 1이라고 가정 사용자의 프로필을 가져와야 하기 때문에 필요하다. 로그인을 하지 않을 경우를 고려해야 한다. -> 추후 개발 예정
-        Integer userId = 1;
+
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
 
         List<TaskEntity> taskList = taskService.getFilteredTasks(userId, onlyMine, school, dormitory, etc, print, food, coverFor, clean, eventAssistant, bug, onlyYet);
 

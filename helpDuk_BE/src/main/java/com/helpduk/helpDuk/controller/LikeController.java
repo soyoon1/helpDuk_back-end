@@ -1,6 +1,6 @@
 package com.helpduk.helpDuk.controller;
 
-import com.helpduk.helpDuk.base.dto.response.ResponseDTO;
+import com.helpduk.helpDuk.config.security.JwtTokenProvider;
 import com.helpduk.helpDuk.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +16,21 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/create")
-    public String createLike(@RequestParam Integer userId, @RequestParam Integer likeUserId){
+    public ResponseEntity<String> createLike(@RequestParam Integer likeUserId){
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
 
         likeService.createLike(userId, likeUserId);
 
-        return "좋아요 생성 완료";
+        return ResponseEntity.ok("좋아요 생성 완료");
     }
 
     @DeleteMapping("/delete")
-    public String deleteLike(@RequestParam Integer userId, @RequestParam Integer likeUserId){
+    public ResponseEntity<String> deleteLike(@RequestParam Integer likeUserId){
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
+
         likeService.deleteLike(userId, likeUserId);
 
-       return "좋아요 취소 완료";
+       return ResponseEntity.ok("좋아요 취소 완료");
     }
 
 

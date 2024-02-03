@@ -4,10 +4,12 @@ import com.helpduk.helpDuk.base.Enum.TaskStatus;
 import com.helpduk.helpDuk.base.dto.ReviewDetailDto;
 import com.helpduk.helpDuk.base.dto.ReviewDto;
 import com.helpduk.helpDuk.base.dto.ReviewRequestDto;
+import com.helpduk.helpDuk.entity.ChatRoomEntity;
 import com.helpduk.helpDuk.entity.ReviewEntity;
 import com.helpduk.helpDuk.entity.TaskEntity;
 import com.helpduk.helpDuk.entity.UserEntity;
 import com.helpduk.helpDuk.repository.ChatRoomRepository;
+import com.helpduk.helpDuk.repository.ReviewRepository;
 import com.helpduk.helpDuk.repository.TaskRepository;
 import com.helpduk.helpDuk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +40,7 @@ public class ReviewService {
         }
 
         // 해당 의뢰글에 accept_user_id 추가해 줌. + 거래 현황을 거래 완료로 바꿔 줌.
-        TaskEntity task = room.getTaskId();
+        TaskEntity task = room.getTask();
         task.setAcceptUser(room.getHelper());
         task.setTaskStatus(TaskStatus.DONE);
         taskRepository.save(task);
@@ -51,8 +53,10 @@ public class ReviewService {
         ReviewEntity review = ReviewEntity.builder()
                 .content(reviewRequestDto.getContent())
                 .acceptUser(room.getHelper())
-                .task(room.getTaskId())
+                .task(room.getTask())
                 .user(room.getUser())
+                .nickname(room.getUser().getNickName())
+                .profileImage(room.getUser().getProfileImage())
                 .build();
 
         reviewRepository.save(review);
