@@ -1,0 +1,9 @@
+  
+  .chatpage {
+    display: flex;
+    height: 100vh; /* 화면 전체 높이를 채우도록 설정합니다. */
+  }
+  
+  .chatpage > * {
+    flex: 1; /* 자식 요소들이 화면의 반을 차지하도록 flex 속성을 설정합니다. */
+  }

@@ -1,0 +1,10 @@
+/* MyRequests.js */
+.myList .reviewwriterButton {
+    background-color: #80BCBD;
+    padding-top: 7px;
+    text-align: center;
+    width: 97px;
+    height: 32px;
+    border-radius: 10px;
+    color: white;
+}

@@ -57,4 +57,8 @@ public class UserEntity {
     public Float getTemperature(){
         return temperature;
     }
+
+    public UserEntity(int userId) {
+        this.userId = userId;
+    }
 }

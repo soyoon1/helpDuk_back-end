@@ -1,0 +1,11 @@
+.chatdetaildefault {
+    flex-basis: 50%;
+
+    display: flex;
+    align-items: center; /* 수직 방향 중앙 정렬 */
+    justify-content: center; /* 수평 방향 중앙 정렬 */
+  }
+
+  .defaultScreen {
+    text-align: center; /* 내용을 가운데 정렬 */
+  }
