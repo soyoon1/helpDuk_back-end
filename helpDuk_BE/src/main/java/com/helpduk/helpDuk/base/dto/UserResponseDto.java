@@ -20,4 +20,6 @@ public class UserResponseDto {
 
     private List<ReviewDto> reviewDtoList;
 
+    private boolean isLike;
+
 }

@@ -20,7 +20,7 @@ public class LikeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer likeId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userId")
     private UserEntity userId;
 
