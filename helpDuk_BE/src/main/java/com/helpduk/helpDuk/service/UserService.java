@@ -30,4 +30,16 @@ public class UserService {
                 .build();
     }
 
+    @Transactional
+    public String getUserProfileImage(Integer userId){
+        UserEntity user = userRepository.findByUserId(userId).orElseThrow();
+        return user.getProfileImage();
+    }
+
+    @Transactional
+    public String getUserNickName(Integer userId){
+        UserEntity user = userRepository.findByUserId(userId).orElseThrow();
+        return user.getNickName();
+    }
+
 }

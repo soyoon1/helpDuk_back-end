@@ -24,13 +24,13 @@ public class ChatRoomController {
         return "/chat/room";
     }
 
-//    // 모든 채팅방 목록 반환
-//    @GetMapping("/rooms")
-//    @ResponseBody
-//    public List<ChatRoomListDto> room() {
-//        Integer userId = JwtTokenProvider.getCurrentMemberId();
-//        return chatService.findAllRoom(userId);
-//    }
+    // 모든 채팅방 목록 반환
+    @GetMapping("/rooms")
+    @ResponseBody
+    public List<ChatRoomListDto> room() {
+        Integer userId = JwtTokenProvider.getCurrentMemberId();
+        return chatService.findAllRoom(userId);
+    }
 
     // 채팅방 생성
     @PostMapping("/room")
