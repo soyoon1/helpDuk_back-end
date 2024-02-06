@@ -2,6 +2,8 @@ package com.helpduk.helpDuk.controller;
 
 import com.helpduk.helpDuk.base.dto.ReviewDetailDto;
 import com.helpduk.helpDuk.service.ReviewService;
+import com.helpduk.helpDuk.service.S3UploadService;
+import com.helpduk.helpDuk.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Slf4j
 @RequestMapping("/api")
@@ -30,12 +35,16 @@ import org.springframework.web.bind.annotation.*;
 public class MypageController {
 
     private final ReviewService reviewService;
+    private final UserService userService;
 
     private final Logger LOGGER = LoggerFactory.getLogger(MypageController.class);
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final MyPageService myPageService;
     private AuthenticationManager authenticationManager;
+    private final S3UploadService s3UploadService;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping("/mypage")
     public ResponseEntity<MyPageDto> getMyPage(HttpServletRequest request){
@@ -54,20 +63,46 @@ public class MypageController {
         return ResponseEntity.ok(myPageDto);
     }
 
+//    @PostMapping("/mypage/edit")
+//    public ResponseEntity<String> editProfile(@RequestParam("nickName") String nickname,
+//                                              @RequestParam("profileImage") String profileImage){
+//
+////        Integer userId = JwtTokenProvider.authenticatedUser();
+//        Integer userId = JwtTokenProvider.getCurrentMemberId();
+//
+//        myPageService.updateProfile(userId, nickname, profileImage);
+//
+//        //세션 등록
+////        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+////                userRepository.findByUserId(userId).getUserEmail(),
+////                userRepository.findByUserId(userId).getPassword()));
+////        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        return ResponseEntity.ok("프로필 수정 완료");
+//
+//    }
+
     @PostMapping("/mypage/edit")
     public ResponseEntity<String> editProfile(@RequestParam("nickName") String nickname,
-                                              @RequestParam("profileImage") String profileImage){
+                                              @RequestParam("profileImage") MultipartFile profileImage) throws IOException {
 
-//        Integer userId = JwtTokenProvider.authenticatedUser();
         Integer userId = JwtTokenProvider.getCurrentMemberId();
 
-        myPageService.updateProfile(userId, nickname, profileImage);
+        if (nickname != null && nickname.isEmpty()){
+            nickname = userService.getUserNickName(userId);
+        }
 
-        //세션 등록
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-//                userRepository.findByUserId(userId).getUserEmail(),
-//                userRepository.findByUserId(userId).getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String profileImgUrl = null;
+        logger.info(String.valueOf(profileImage));
+
+        if (profileImage != null && !profileImage.isEmpty()){
+            profileImgUrl = s3UploadService.saveFile(profileImage);
+        }else{
+            profileImgUrl = userService.getUserProfileImage(userId);
+        }
+
+
+        myPageService.updateProfile(userId, nickname, profileImgUrl);
 
         return ResponseEntity.ok("프로필 수정 완료");
 

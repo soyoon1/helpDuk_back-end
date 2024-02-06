@@ -1,0 +1,114 @@
+.editTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+}
+
+/* 의뢰 목록 공통 css */
+.myList {
+    margin: 40px 30px;
+    display: flex;
+    width: 455px;
+    height: 250px;
+    align-items: center;
+    background-color: white;
+    border: 2px solid #dfdfdf;
+    border-radius: 15px;
+}
+
+.myList .requestsPhoto {
+    height: 170px;
+    padding: 0 50px;
+}
+
+.myList .ListInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.myList .requestsState {
+    background-color: #6B6966;
+    padding-top: 7px;
+    text-align: center;
+    width: 87px;
+    height: 30px;
+    border-radius: 10px;
+    color: white;
+}
+
+.myList .ListInfo .dealStatus {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* profileEdit.js */
+.profileEdit .submitButton {
+    background-color: #EFECE8;
+    text-align: center;
+    width: 6em;
+    height: 45px;
+    border-radius: 15px;
+    border: 0px;
+    font-size: 17px;
+}
+
+.profileEdit .editInfo{
+    padding-top: 10vh;
+}
+
+.profileEdit .editInfo table {
+    width: 80%;
+    border: 2px solid #D6D6D6;
+    border-collapse: collapse;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.profileEdit .editInfo tr, .profileEdit .editInfo td {
+    border: 2px solid #D6D6D6;
+    text-align: center;
+    height: 25vh;
+    width: 15%;
+}
+
+.profileEdit .editImage {
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+    gap: 40px;
+}
+
+.profileEdit .profile {
+    width: 150px;  
+    height: 150px;  
+    object-fit: cover; 
+    border-radius: 50%; 
+}
+
+.profileEdit .editImage .profileButton {
+    background-color: #eeeeee;
+    text-align: center;
+    padding-top: 10px;
+    width: 7em;
+    height: 32px;
+    border-radius: 15px;
+}
+
+.profileEdit input {
+    width: 45em;
+    height: 50px;
+    font-size: 15px;
+    border: 1px solid black;
+    border-radius: 5px;
+    outline: none;
+    padding-left: 10px;
+    background-color: #fcfcfc;
+}
+
+.profileEdit .nickName p {
+    color: red;
+    font-size: 0.8em;
+}

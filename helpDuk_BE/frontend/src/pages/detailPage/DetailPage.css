@@ -1,0 +1,23 @@
+.detailpage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+    width: 100%; 
+  }
+  
+.leftSide {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 50px;
+}
+
+.rightSide {
+    flex: 0 0 auto; /* 크기를 자동으로 지정하고 남은 공간을 차지하지 않도록 설정 */
+    height: 100%;
+  }
+
+  

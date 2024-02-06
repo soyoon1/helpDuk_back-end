@@ -1,0 +1,40 @@
+.navbar {
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    height: 85px;
+    border-bottom: solid 2px #80BCBD;
+    background-color: white;
+    padding-right: 70px;
+    z-index: 999;
+}
+
+.navbar .log {
+    height: 75px;
+    padding-left: 70px;
+    padding-top: 5px;
+}
+
+.navbar strong {
+    padding-right: 70px;
+    color: #80BCBD;
+}
+
+.navbar .navIcon {
+    padding-right: 70px;
+}
+
+.navbar .navchat, .navbar .navalarm {
+    padding-left: 30px;
+    height: 30px;
+}
+
+.navbar .navprofile {
+    margin-left: 30px;
+    height: 32px;
+    width: 32px;   
+    object-fit: cover; 
+    border-radius: 50%; 
+}

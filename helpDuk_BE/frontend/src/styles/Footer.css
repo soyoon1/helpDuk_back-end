@@ -1,0 +1,21 @@
+.footer {
+    padding: 20px 0;
+    position: relative;
+    text-align: center;
+    background-color: #ADADAD;
+}
+
+.footerText {
+    display: inline-block;
+    padding-left: 20px;
+    color: #737373; 
+}
+
+.footer .log {
+    height: 70px;
+}
+
+.footer .copyright {
+    padding-top: 20px;
+    color: #ECECEC;
+}

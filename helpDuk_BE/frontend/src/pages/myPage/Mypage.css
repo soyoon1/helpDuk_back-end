@@ -1,0 +1,62 @@
+.mypage .userProfile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.mypage .userinfo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.mypage .userSetting {
+    display: flex;
+    text-align: center;
+    gap: 20px;
+}
+
+.mypage .userImg {
+    height: 90px;
+    width: 90px;
+    object-fit: cover; 
+    border-radius: 50%; 
+}
+
+.mypage .loveHelper {
+    height: 60px;
+    width: 60px;
+    align-items: center;
+}
+
+.mypage .userSetting h4 {
+    background-color: #EFECE8;
+    padding-top: 10px;
+    width: 8em;
+    height: 35px;
+    border-radius: 15px;
+}
+
+.mypage .mytemperature {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.mypage .temperatureInfo {
+    display: flex;
+    align-items: center;
+}
+
+.mypage .temperatureInfo h2{
+    color: #AAD9BB;
+    font-size: 2em;
+    margin: 0 10px;
+}
+
+.mypage .myrequestsList h2 {
+    font-size: 25px;
+    margin: 0;
+}

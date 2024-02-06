@@ -1,0 +1,29 @@
+.homepageHeader {
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+}
+
+.homepageHeader h1 {
+  margin-right: 870px; /* 텍스트와 버튼 사이 간격 조절 */
+}
+
+.homepageHeader .writeButton {
+  display: flex;
+  justify-content: center; /* 수평으로 가운데 정렬 */
+  align-items: center; /* 수직으로 가운데 정렬 */
+
+  /* Rectangle 76 */
+  width: 100px;
+  height: 43px;
+  background: #AAD9BB;
+  border-radius: 15px;
+
+  /* 의뢰 하기 */
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 30px;
+  color: #FFFFFF;
+}
+

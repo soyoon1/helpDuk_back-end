@@ -1,0 +1,16 @@
+/* ReviewList.css */
+.reviewList > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly; 
+}
+
+.detailList {
+    margin: 0 20px 50px 20px;
+    width: 600px;
+    height: 180px;
+    text-align: center;
+    background-color: white;
+    border: 2px solid #dfdfdf;
+    border-radius: 10px;
+}

@@ -1,0 +1,43 @@
+.carousel {
+    position: relative;
+    width: 350px; 
+    height: 250px;
+    margin: 20px; 
+}
+.carousel-item {
+    width: 100%; /* Carousel의 100% 너비로 설정하여 부모 요소에 맞게 확대/축소 */
+    height: 100%; /* Carousel의 100% 높이로 설정하여 부모 요소에 맞게 확대/축소 */
+}
+
+.carousel-item img {
+    border-radius: 20px;
+    width: 100%; /* Carousel의 100% 너비로 설정하여 부모 요소에 맞게 확대/축소 */
+    height: 100%; /* Carousel의 100% 높이로 설정하여 부모 요소에 맞게 확대/축소 */
+  }
+
+/* Carousel 컴포넌트의 화살표와 글자 색상을 검은색(#000)으로 수정 */
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 50%; /* 상단 위치를 70%로 설정 */
+  transform: translateY(-50%); /* 수직 정렬을 위해 translateY 사용 */
+  color: #000;
+  background-color: #000; /* 화살표의 배경색을 검은색으로 변경 */
+  width: 30px; /* 원하는 폭으로 조절 */
+  height: 30px; /* 원하는 높이로 조절 */
+}
+
+/* .carousel-control-prev의 왼쪽 위치를 조절 */
+.carousel-control-prev {
+    left: 10px; /* 원하는 위치로 조절 */
+  }
+  
+  /* .carousel-control-next의 오른쪽 위치를 조절 */
+  .carousel-control-next {
+    right: 10px; /* 원하는 위치로 조절 */
+  }
+
+/* 하단 바 아이템을 완전히 없애기 */
+.carousel-indicators {
+    display: none;
+  }

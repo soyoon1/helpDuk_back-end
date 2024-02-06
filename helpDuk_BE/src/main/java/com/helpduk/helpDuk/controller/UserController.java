@@ -1,6 +1,7 @@
 package com.helpduk.helpDuk.controller;
 
 import com.helpduk.helpDuk.base.dto.UserResponseDto;
+import com.helpduk.helpDuk.config.security.JwtTokenProvider;
 import com.helpduk.helpDuk.service.ReviewService;
 import com.helpduk.helpDuk.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,11 @@ public class UserController {
 
     // 타회원 페이지 보이기
     @GetMapping("")
-    public ResponseEntity<UserResponseDto> getOtherUserInformation(@RequestParam Integer userId){
+    public ResponseEntity<UserResponseDto> getOtherUserInformation(@RequestParam Integer otherUserId){
 
-        UserResponseDto userResponseDto = userService.getOtherUserInformation(userId);
+        Integer currentUserId = JwtTokenProvider.getCurrentMemberId();
+
+        UserResponseDto userResponseDto = userService.getOtherUserInformation(currentUserId, otherUserId);
 
         return ResponseEntity.ok(userResponseDto);
     }

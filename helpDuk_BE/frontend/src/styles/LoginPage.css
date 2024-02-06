@@ -1,0 +1,92 @@
+.login {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    margin-top: 1px;
+    
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+input[type="email"], input[type="password"] {
+    width: 300px;
+    height: 50px;
+    border-radius: 5px;
+    border: 1px solid #D9D9D9;
+    background: #FFF;
+    padding-left: 16px;
+    color: #787878;
+    align-items: center; 
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.32px;
+    padding: -10px;
+}
+
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline-color: #80BCBD; 
+}
+
+.login-button {
+    width: 410px; 
+    height: 55px;
+    padding: 10px; 
+    font-size: 16px; 
+    border-radius: 5px; 
+    border-width: thin;
+    margin-top: 20px; 
+    margin-bottom: 20px; 
+    font-weight: bold;
+    background-color: #FFFFFF;
+    color: cadetblue;
+    border-color: #80BCBD;
+}
+
+.login-button:hover {
+    background-color: #6CA9AA; 
+}
+/* 
+css 안먹음 이슈
+*/
+.signup-button {
+    width: 410px; 
+    height: 55px;
+    padding: 10px; 
+    font-size: 16px; 
+    border-radius: 5px; 
+    border-width: thin;
+    margin-top: 20px; 
+    margin-bottom: 20px; 
+    font-weight: bold;
+    background-color: #80BCBD;
+    color: #FFFFFF;
+    border-color: #80BCBD;
+} 
+
+.signup-button:hover {
+    outline: 1px solid #6CA9AA;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; 
+}
+
+.cloud-logo {
+    margin-top: 60px;
+    width: 200px; 
+    height: 200px; 
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
