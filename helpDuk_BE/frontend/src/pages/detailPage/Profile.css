@@ -1,0 +1,32 @@
+.profile-contents {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+.profile img {
+    margin-right: 10px; /* 이미지 오른쪽에 간격 추가 */
+}
+
+.profile h4, .profile h5 {
+    margin: 0; /* 헤더의 기본 마진 제거 */
+}
+
+.profile h5 {
+    margin-left: 20px;
+}
+
+.profile {
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100%;
+}
+
+/* 선을 추가하고 싶은 경우 */
+.profile::after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 100%; /* 선의 길이 설정 */
+  background-color: #ccc; /* 선의 색상 설정 */
+  margin-top: 10px; /* 선 위쪽에 여백 추가 */
+}

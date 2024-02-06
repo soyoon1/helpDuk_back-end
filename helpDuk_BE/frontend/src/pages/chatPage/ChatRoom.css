@@ -1,0 +1,37 @@
+.chatroomButton {
+    margin: 20px;
+    padding: 10px;
+    width: 98%;
+    margin-left: 1%;
+    border: none;
+    background-color: #D5F0C1;
+    display: flex; /* Flexbox를 사용하여 자식 요소들을 가로로 배치합니다. */
+    border-radius: 10px;
+}
+.chatroomButton:active,
+.chatroomButton:focus {
+  background-color: rgba(204, 204, 204, 0.5); /* 클릭 또는 포커스 상태일 때의 배경색을 지정합니다. */
+}
+
+.chatprofile {
+    margin-right: 10px; /* 프로필 이미지와 다음 요소 사이에 오른쪽 여백을 추가합니다. */
+    width: 50px;
+    height: 50px;
+  }
+  
+  .userName,
+  .recentChat {
+    flex: 1; /* 나머지 자식 요소들이 남은 공간을 차지하도록 flex 속성을 추가합니다. */
+  }
+
+/*채팅방 위에 줄 추가*/
+.chatroom::before {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 98%; /* 선의 길이 설정 */
+    background-color: #80BCBD; 
+    margin-top: 10px; /* 선 위쪽에 여백 추가 */
+    margin-bottom: 10px; /* 선 위쪽에 여백 추가 */
+    margin-left: 1%; /* 선을 중앙에 오도록 좌우 여백 조절 */
+}

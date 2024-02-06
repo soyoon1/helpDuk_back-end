@@ -1,0 +1,64 @@
+/* WriteReview.js */
+.writeReview {
+    text-align: center;
+    align-items: center;
+}
+
+.writeReview .reviewIntro {
+    padding-top: 4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.writeReview .reviewlog {
+    display: flex;
+    height: 100px;
+    padding-right: 30px;
+}
+
+.writeReview .reviewImg {
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    padding-top: 60px;
+}
+
+.writeReview .radioButton {
+    visibility: hidden;
+}
+/* 
+.writeReview input[type=radio]:checked + div {
+    border: 3px solid #AAD9BB;
+    border-radius: 15px;
+} */
+
+.writePage {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.writePage form {
+    width: 50vw;
+    flex-direction: column;
+    align-items: center;
+}
+
+.writePage textarea {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.writePage .buttonStyle {
+    text-align: right;
+}
+
+.writePage button {
+    width: 100px;
+    height: 40px;
+    border: 1px solid #80BCBD;
+    font-weight: bold;
+    border-radius: 20px;
+    margin: 5px;
+}

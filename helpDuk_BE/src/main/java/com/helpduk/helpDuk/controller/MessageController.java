@@ -22,15 +22,13 @@ public class MessageController {
 
     private final SimpMessageSendingOperations sendingOperations;
     private final MessageService messageService;
-    private final UserRepository userRepository;
 
     @MessageMapping("/chat/message")
     public void enter(MessageEntity message) {
         if (MessageType.ENTER.equals(message.getType())) {
-            Integer userId = JwtTokenProvider.getCurrentMemberId();
-
-            UserEntity user = userRepository.findById(userId).orElseThrow();
-            message.setContent(user.getNickName() + " 님이 입장하였습니다.");
+//            Integer userId = JwtTokenProvider.getCurrentMemberId();
+//            UserEntity user = userRepository.findById(userId).orElseThrow();
+            message.setContent("@@@ 님이 입장하였습니다.");
         }
 
         messageService.saveMessage(message);

@@ -1,0 +1,13 @@
+.homepage {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: auto; /* 수직 가운데 정렬을 위해 top과 bottom을 auto로 설정 */
+  margin-top: 100px;
+  margin-bottom: 100px;
+  justify-content: center; /* 세로 방향으로 가운데 정렬 */
+  align-items: center; /* 가로 방향으로 가운데 정렬 */
+}
+
+
+

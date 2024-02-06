@@ -1,0 +1,44 @@
+/* 체크박스 디자인 */
+.category-dropdown ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .category-dropdown li {
+    margin-left: 5px;
+    padding: 0px;
+  }
+  
+  .category-dropdown label {
+    margin-left: 3px;
+  }
+  
+  .category-dropdown input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #80BCBD;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    margin-right: 4px;
+    margin-left: 20px;
+    cursor: pointer;
+  }
+  
+  .category-dropdown input[type="checkbox"]:checked {
+    border: 2px solid #80BCBD;
+  }
+  
+  .category-dropdown input[type="checkbox"]:checked::before {
+    content: '\2713'; /* 유니코드 ✓ 문자 사용 */
+    font-size: 12px;
+    color: #80BCBD; /* 체크 마크의 색상 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  

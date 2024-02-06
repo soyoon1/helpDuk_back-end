@@ -25,7 +25,7 @@ public class MessageService {
     }
 
     public List<ChatMessageDto> getAllMessages(Integer userId, String roomId){
-        userRepository.findById(userId).orElseThrow();
+        userRepository.findByUserId(userId).orElseThrow();
         return messageRepository.findByRoomId(roomId);
 
     }

@@ -1,0 +1,93 @@
+.request {
+    flex-direction: row;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 20px; /* 수정된 부분 */
+
+    width: 870px;
+    height: 146px;
+    left: 143px;
+    top: 285px;
+
+    background: #FFFFFF;
+    border: 1px solid #848484;
+    border-radius: 12px;
+    display: flex; /* 이미지와 내용을 수평으로 정렬하기 위해 추가 */
+}
+.request .requestTitle {
+    display: flex; /* 내부 요소들을 수평으로 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+.request .requestTitle h2,
+.request .requestTitle .isSolved {
+    display: inline-block; /* 내부의 h3와 .isSolved를 인라인 블록으로 설정하여 수평으로 정렬 */
+    margin-right: 15px; /* 간격 설정 */
+}
+
+.request .detail,
+.request .category {
+    display: block;
+}
+
+.request .category {
+    font-weight: bold;
+    color:#848484;
+}
+
+.request .image {
+    width: 120px; /* 이미지의 원하는 가로 크기로 설정 */
+    height: 100%; /* 부모 요소의 높이에 맞게 설정 */
+    overflow: hidden; /* 이미지 크기를 벗어나지 않도록 설정 */
+    border-radius: 10px; /* 이미지의 테두리를 둥글게 만들기 위해 추가 */
+    margin-left: 20px;
+}
+
+.request .image img {
+    width: 100%; /* 이미지를 부모 요소의 크기에 맞게 설정 */
+    height: 100%; /* 이미지를 부모 요소의 크기에 맞게 설정 */
+    object-fit: cover; /* 이미지를 잘라내어 부모 요소에 맞추기 위해 추가 */
+}
+
+.request .price{
+    position: relative;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+
+    color: #80BCBD;
+
+    display: flex; /* 내부 요소들을 수평으로 정렬 */
+    flex-direction: column; /* 내부 요소들을 세로로 정렬 */
+
+    height: 100px;
+}
+.request .price h2 {
+    margin-top: 100%; /* 원하는 간격 설정 */
+}
+
+
+.request .isSolved {
+    /* 거래 완료 표시 */
+    position: relative;
+    margin-bottom: 30px;;
+
+    /* Rectangle 76 */
+    position: relative;
+    width: 75px;
+    height: 22px;
+
+    background: #7C7C7C;
+    border-radius: 5px;
+
+    /* 거래 완료 */
+    position: relative;
+    padding: 5px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    color: #FFFFFF;
+}
+

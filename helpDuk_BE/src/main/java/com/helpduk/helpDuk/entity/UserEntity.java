@@ -42,7 +42,7 @@ public class UserEntity {
     private Float temperature;
 
     // security 에서 사용하는 회원 구분 id
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public Integer getUserId() {
         return this.userId;
     }
@@ -56,5 +56,9 @@ public class UserEntity {
     }
     public Float getTemperature(){
         return temperature;
+    }
+
+    public UserEntity(int userId) {
+        this.userId = userId;
     }
 }

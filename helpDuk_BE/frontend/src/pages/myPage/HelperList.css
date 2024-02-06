@@ -1,0 +1,13 @@
+.helperList {
+    display: flex;
+    align-items: center;
+    padding: 30px;
+    gap: 20px;
+}
+
+.helperList .userImg {
+    height: 80px;
+    width: 80px;
+    object-fit: cover; 
+    border-radius: 50%; 
+}

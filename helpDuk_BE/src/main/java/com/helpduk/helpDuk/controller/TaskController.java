@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequestMapping("/api")
@@ -78,8 +79,9 @@ public class TaskController {
     }
 
     @PutMapping("/task/{taskId}") // 심부를 거래 현황 변경
-    public ResponseEntity<String> updateTaskStatus(@PathVariable Integer taskId, @RequestBody String taskStatus) throws AccessDeniedException {
+    public ResponseEntity<String> updateTaskStatus(@PathVariable Integer taskId, @RequestBody Map<String, String> request) throws AccessDeniedException {
 
+        String taskStatus = request.get("taskStatus");
 
         Integer visitUserId = JwtTokenProvider.getCurrentMemberId();
 

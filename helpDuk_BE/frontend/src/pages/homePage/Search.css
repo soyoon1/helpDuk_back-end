@@ -1,0 +1,26 @@
+.searchIcon {
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    margin-bottom: 4px;
+  }
+  
+.search img {
+  margin-right: 8px; /* 이미지와 텍스트 사이 간격 조절 */
+}
+
+.searchbar {
+    /* Rectangle 35 */
+
+    box-sizing: border-box;
+
+
+    width: 200px;
+    height: 34px;
+    left: 1083px;
+    top: 296px;
+
+    background: #FFFFFF;
+    border: 1px solid #80BCBD;
+    border-radius: 12px;
+
+}

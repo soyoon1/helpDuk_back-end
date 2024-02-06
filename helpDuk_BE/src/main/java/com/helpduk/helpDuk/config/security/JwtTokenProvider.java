@@ -58,7 +58,6 @@ public class JwtTokenProvider {
 
     /**
      * SecretKey 에 대해 인코딩 수행
-     * 예제 13.11
      */
     @PostConstruct
     protected void init() {
@@ -69,7 +68,7 @@ public class JwtTokenProvider {
         LOGGER.info("[init] JwtTokenProvider 내 secretKey 초기화 완료");
     }
 
-    // 예제 13.12
+
     // JWT 토큰 생성
     public String createToken(String userEmail) {
         LOGGER.info("[createToken] 토큰 생성 시작");

@@ -1,0 +1,84 @@
+.custom-select {
+    width: 180px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+}
+
+.custom-select:hover {
+    border-color: #aaa;
+}
+
+.custom-select:focus {
+    border-color: #80BCBD;
+}
+
+.errand-money {
+    width: 180px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    margin-right: 20px;
+}
+
+.errand-money:focus {
+    border-color: #80BCBD;
+}
+
+.request-money {
+    width: 180px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    margin-right: 20px;
+}
+
+.request-money:focus {
+    border-color: #80BCBD;
+}
+
+.fee {
+    text-align: left;
+    margin-left: 40px;
+}
+
+
+.paymentBox {
+    width: 1000px;
+    height: 250px;
+    border: 1px solid #80BCBD;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #939393;
+    margin-bottom: 5px;
+
+}
+
+.fee-container {
+    display: flex; 
+    flex: 1; 
+    padding: 0 10px; 
+    margin-bottom: 20px;
+    margin-top: 10px;;
+    align-items: center; 
+}
